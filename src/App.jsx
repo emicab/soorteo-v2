@@ -1,4 +1,3 @@
-import React from "react";
 import AvailableNumbers from "./components/AvailableNumbers";
 import SelectedNumbers from "./components/SelectedNumbers";
 import LotterySection from "./components/LotterySection";
@@ -21,7 +20,7 @@ function App() {
       </div>
 
       <div className="flex mt-4 justify-center gap-4">
-          <LotterySection />
+        <LotterySection />
         <ResultsList />
       </div>
     </div>
