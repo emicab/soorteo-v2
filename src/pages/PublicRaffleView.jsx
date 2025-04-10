@@ -57,7 +57,13 @@ const PublicRaffleView = () => {
             {new Date(raffle.date).toLocaleDateString("es-AR")}
           </p>
         </div>
-        <div className="md:col-span-2">
+        <div>
+          <p className="text-sm text-gray-500">👥 Cantidad de ganadores</p>
+          <p className="text-lg font-semibold text-gray-800">
+            {raffle.winnersCount}
+          </p>
+        </div>
+        <div className="md:col-span-1">
           <p className="text-sm text-gray-500 mb-1">🎁 Premios</p>
           <ul className="list-disc list-inside text-gray-700">
             {prizes?.length ? (
@@ -71,6 +77,7 @@ const PublicRaffleView = () => {
             )}
           </ul>
         </div>
+        
       </div>
 
       <div className="bg-gray-100 p-4 rounded-md mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
