@@ -49,7 +49,11 @@ const useStore = create((set) => ({
         alert("La cantidad de números a sortear no puede ser mayor que los seleccionados.");
         return state;
       }
-
+      
+      if (state.premios.length == 0) {
+        alert("No hay premios ingresados.");
+        return state;
+      }
       /* if (state.premios.length < state.cantidadSorteo) {
         alert("No hay suficientes premios para sortear.");
         return state;

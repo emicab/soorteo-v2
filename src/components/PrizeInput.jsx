@@ -22,7 +22,7 @@ const PrizeInput = () => {
           value={prize}
           onChange={(e) => setPrize(e.target.value)}
           placeholder="Ej: Botella de vino"
-          className="border p-2 rounded w-64"
+          className="border p-2 rounded w-34 md:w-64"
         />
         <button onClick={handleAddPrize} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
           Agregar

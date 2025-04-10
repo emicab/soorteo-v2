@@ -1,30 +1,61 @@
-import AvailableNumbers from "./components/AvailableNumbers";
-import SelectedNumbers from "./components/SelectedNumbers";
-import LotterySection from "./components/LotterySection";
-import ResultsList from "./components/ResultsList";
-import PrizeInput from "./components/PrizeInput";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
+import useAuthStore from "./store/useAuthStore";
 
-function App() {
+import LoginForm from "./components/auth/LoginForm";
+import RegisterForm from "./components/auth/RegisterForm";
+import QuickRaffle from "./components/raffle/QuickRaffle";
+import Dashboard from "./components/Dashboard"; // Ruta protegida
+import Navbar from "./components/UI/Navbar";
+import PublicRaffleView from "./pages/PublicRaffleView";
+import SearchRaffle from "./components/raffle/SearchRaffle";
+import SearchHistory from "./components/raffle/SearchHistory";
+import HomePage from "./pages/HomePage";
+
+const PrivateRoute = ({ element }) => {
+  const { user } = useAuthStore();
+  return user ? element : <Navigate to="/login" />;
+};
+
+const PublicRoute = ({ element }) => {
+  const { user } = useAuthStore();
+  return user ? <Navigate to="/dashboard" /> : element;
+};
+
+
+const App = () => {
   return (
-    <div className="bg-gray-800 p-6">
-      <h1 className="text-4xl text-white text-center font-bold py-4">
-        Sorteo v2
-      </h1>
+    <Router>
+      <Navbar />
+      <Routes>
+        {/* Rutas públicas */}
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/login"
+          element={<PublicRoute element={<LoginForm />} />}
+        />
+        <Route
+          path="/register"
+          element={<PublicRoute element={<RegisterForm />} />}
+        />
+        <Route path="/raffles/:id/public" element={<PublicRaffleView />} />
 
-      <div className="flex flex-col items-center md:flex-row justify-center gap-5">
-        <AvailableNumbers />
-        <div className="flex flex-col w-full md:w-1/3">
-          <SelectedNumbers />
-          <PrizeInput />
-        </div>
-      </div>
+        {/* Rutas protegidas */}
+        <Route
+          path="/dashboard"
+          element={<PrivateRoute element={<Dashboard />} />}
+        />
 
-      <div className="flex mt-4 justify-center gap-4">
-        <LotterySection />
-        <ResultsList />
-      </div>
-    </div>
+        {/* Ruta por defecto */}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

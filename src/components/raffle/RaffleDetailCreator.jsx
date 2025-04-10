@@ -1,0 +1,207 @@
+import { useState, useEffect } from "react";
+import useAuthStore from "../../store/useAuthStore";
+import PrizeManager from "../prize/PrizeManager";
+import NumberBoard from "./NumberBoard";
+import { jwtDecode } from "jwt-decode";
+import DrawButton from "../DrawButton";
+import ScreenWinners from "./ScreenWinners";
+
+const URL = import.meta.env.VITE_URL;
+
+const RaffleDetailCreator = ({ raffleId, onBack }) => {
+  const { token } = useAuthStore();
+  const [raffle, setRaffle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
+  const [winners, setWinners] = useState([]);
+
+  const fetchRaffle = async () => {
+    try {
+      const response = await fetch(`${URL}/api/raffles/${raffleId}/creator`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      console.log("Fetch raffle::", data)
+      if (response.ok) {
+        setRaffle(data);
+        if (token) {
+          const decoded = jwtDecode(token);
+          setIsOwner(decoded.id === data.ownerId);
+        }
+      } else {
+        console.error("Error al obtener el sorteo:", data);
+      }
+    } catch (error) {
+      console.error("Error de red al obtener el sorteo:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    if (raffleId) fetchRaffle();
+  }, [raffleId]);
+
+  useEffect(() => {
+    if (raffle?.status === "finished") {
+      fetch(`${URL}/api/raffles/${raffle.id}/winners`)
+        .then((res) => res.json())
+        .then((data) => setWinners(data))
+        .catch((err) => console.error("Error al cargar ganadores:", err));
+    }
+  }, [raffle]);
+
+  if (loading) return <p>Cargando sorteo...</p>;
+  if (!raffle) return <p>No se pudo cargar el sorteo.</p>;
+
+  const totalSold = raffle.tickets.filter((t) => t.status === "sold").length;
+  const totalReserved = raffle.tickets.filter(
+    (t) => t.status === "reserved"
+  ).length;
+  const totalAvailable = raffle.tickets.length - totalSold - totalReserved;
+  const totalIncome = totalSold * raffle.pricePerNumber;
+
+  
+  if (raffle?.status === "finished") {
+    return <ScreenWinners winners={winners} />;
+  }
+
+  return (
+    <div className="container mx-auto p-4">
+      <div className="container mx-autox ">
+        <button onClick={onBack} className="text-blue-500 underline mb-4">
+          ← Volver
+        </button>
+
+        <h2 className="text-3xl font-bold text-gray-800 mb-4 uppercase">
+          {raffle.title}
+        </h2>
+
+        <div className="bg-white rounded-lg shadow-md border border-gray-200 p-5 space-y-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Descripción</p>
+              <p className="text-lg text-gray-800">{raffle.description}</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:justify-between gap-4">
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Precio por número</p>
+              <p className="text-lg text-green-600 font-semibold">
+                ${raffle.pricePerNumber}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Fecha del sorteo</p>
+              <p className="text-lg text-gray-800">
+                {new Date(raffle.date).toLocaleDateString("es-AR")}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Estado</p>
+              <span
+                className={`text-sm font-semibold px-3 py-1 rounded-full 
+            ${
+              raffle.status === "pending"
+                ? "bg-yellow-100 text-yellow-700"
+                : raffle.status === "active"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+              >
+                {raffle.status === "pending"
+                  ? "Pendiente"
+                  : raffle.status === "active"
+                  ? "Activo"
+                  : "Finalizado"}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 mt-2 bg-gray-100 px-4 py-3 rounded-lg border border-gray-300">
+            <div className="text-gray-600 font-semibold">
+              <span className="block text-sm">Código del sorteo</span>
+              <span className="text-xl font-mono text-gray-800">
+                {raffle.shortCode}
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(raffle.shortCode);
+                alert("Código copiado al portapapeles");
+              }}
+              className="ml-auto px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              Copiar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white border border-gray-200 rounded-lg shadow-md my-6 p-4">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+          📊 Estado del sorteo
+        </h3>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+          <div className="flex flex-col items-center bg-gray-50 p-3 rounded">
+            <span className="text-xl">🎟️</span>
+            <p className="text-gray-500">Total</p>
+            <p className="text-gray-800 font-semibold">
+              {raffle.tickets.length}
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center bg-gray-50 p-3 rounded">
+            <span className="text-xl">✅</span>
+            <p className="text-gray-500">Vendidos</p>
+            <p className="text-green-600 font-semibold">{totalSold}</p>
+          </div>
+
+          <div className="flex flex-col items-center bg-gray-50 p-3 rounded">
+            <span className="text-xl">⏳</span>
+            <p className="text-gray-500">Reservados</p>
+            <p className="text-yellow-600 font-semibold">{totalReserved}</p>
+          </div>
+
+          <div className="flex flex-col items-center bg-gray-50 p-3 rounded">
+            <span className="text-xl">📭</span>
+            <p className="text-gray-500">Disponibles</p>
+            <p className="text-blue-600 font-semibold">{totalAvailable}</p>
+          </div>
+
+          <div className="flex flex-col items-center bg-purple-50 p-3 rounded col-span-2 sm:col-span-1">
+            <span className="text-xl">💰</span>
+            <p className="text-gray-500">Recaudado</p>
+            <p className="text-purple-600 font-bold text-lg">${totalIncome}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Tablero de números */}
+      <NumberBoard
+        raffleId={raffle.id}
+        isCreator={isOwner}
+        title={raffle.title}
+      />
+
+      {/* Sección para gestionar premios */}
+      <div className="mt-8">
+        <h3 className="text-xl font-bold text-gray-800 mb-2">Premios</h3>
+        <PrizeManager raffleId={raffleId} />
+      </div>
+
+      {/* En el futuro: botón para iniciar el sorteo automáticamente */}
+      <DrawButton raffleId={raffleId} onDrawSuccess={fetchRaffle} />
+    </div>
+  );
+};
+
+export default RaffleDetailCreator;
