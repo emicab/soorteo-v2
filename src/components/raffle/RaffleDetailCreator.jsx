@@ -5,6 +5,7 @@ import NumberBoard from "./NumberBoard";
 import { jwtDecode } from "jwt-decode";
 import DrawButton from "../DrawButton";
 import ScreenWinners from "./ScreenWinners";
+import SellersPanel from "../sellers/SellersPanel";
 
 const URL = import.meta.env.VITE_URL;
 
@@ -13,7 +14,7 @@ const RaffleDetailCreator = ({ raffleId, onBack }) => {
   const [raffle, setRaffle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
-  const [winners, setWinners] = useState([]);
+  const [results, setResults] = useState([]);
 
   const fetchRaffle = async () => {
     try {
@@ -25,7 +26,7 @@ const RaffleDetailCreator = ({ raffleId, onBack }) => {
         credentials: "include",
       });
       const data = await response.json();
-      console.log("Fetch raffle::", data)
+      console.log("Fetch raffle::", data);
       if (response.ok) {
         setRaffle(data);
         if (token) {
@@ -41,16 +42,17 @@ const RaffleDetailCreator = ({ raffleId, onBack }) => {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     if (raffleId) fetchRaffle();
   }, [raffleId]);
 
+  console.log(raffle);
   useEffect(() => {
     if (raffle?.status === "finished") {
-      fetch(`${URL}/api/raffles/${raffle.id}/winners`)
+      fetch(`${URL}/api/raffles/${raffle.id}/results`)
         .then((res) => res.json())
-        .then((data) => setWinners(data))
+        .then((data) => setResults(data))
         .catch((err) => console.error("Error al cargar ganadores:", err));
     }
   }, [raffle]);
@@ -65,21 +67,40 @@ const RaffleDetailCreator = ({ raffleId, onBack }) => {
   const totalAvailable = raffle.tickets.length - totalSold - totalReserved;
   const totalIncome = totalSold * raffle.pricePerNumber;
 
-  
   if (raffle?.status === "finished") {
-    return <ScreenWinners winners={winners} />;
+    return <ScreenWinners results={results} />;
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mb-10">
       <div className="container mx-autox ">
         <button onClick={onBack} className="text-blue-500 underline mb-4">
           ← Volver
         </button>
 
-        <h2 className="text-3xl font-bold text-gray-800 mb-4 uppercase">
-          {raffle.title}
-        </h2>
+        <div className="flex mb-4 items-center justify-between">
+          <h2 className="text-3xl font-bold text-gray-800  uppercase">
+            {raffle.title}
+          </h2>
+          <div>
+            <span
+              className={`text-sm font-semibold px-3 py-1 rounded-full 
+            ${
+              raffle.status === "pending"
+                ? "bg-yellow-100 text-yellow-700"
+                : raffle.status === "active"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+            >
+              {raffle.status === "pending"
+                ? "Pendiente"
+                : raffle.status === "active"
+                ? "Activo"
+                : "Finalizado"}
+            </span>
+          </div>
+        </div>
 
         <div className="bg-white rounded-lg shadow-md border border-gray-200 p-5 space-y-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -98,30 +119,17 @@ const RaffleDetailCreator = ({ raffleId, onBack }) => {
             </div>
 
             <div>
-              <p className="text-sm text-gray-500 mb-1">Fecha del sorteo</p>
-              <p className="text-lg text-gray-800">
-                {new Date(raffle.date).toLocaleDateString("es-AR")}
+              <p className="text-sm text-gray-500">Cantidad de ganadores</p>
+              <p className="text-lg font-semibold text-gray-800">
+                {raffle.winnersCount}
               </p>
             </div>
 
             <div>
-              <p className="text-sm text-gray-500 mb-1">Estado</p>
-              <span
-                className={`text-sm font-semibold px-3 py-1 rounded-full 
-            ${
-              raffle.status === "pending"
-                ? "bg-yellow-100 text-yellow-700"
-                : raffle.status === "active"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            }`}
-              >
-                {raffle.status === "pending"
-                  ? "Pendiente"
-                  : raffle.status === "active"
-                  ? "Activo"
-                  : "Finalizado"}
-              </span>
+              <p className="text-sm text-gray-500 mb-1">Fecha del sorteo</p>
+              <p className="text-lg text-gray-800">
+                {new Date(raffle.date).toLocaleDateString("es-AR")}
+              </p>
             </div>
           </div>
 
@@ -196,10 +204,14 @@ const RaffleDetailCreator = ({ raffleId, onBack }) => {
       <div className="mt-8">
         <h3 className="text-xl font-bold text-gray-800 mb-2">Premios</h3>
         <PrizeManager raffleId={raffleId} />
+        <SellersPanel
+          raffleId={raffle.id}
+          pricePerNumber={raffle.pricePerNumber}
+        />
       </div>
-
-      {/* En el futuro: botón para iniciar el sorteo automáticamente */}
-      <DrawButton raffleId={raffleId} onDrawSuccess={fetchRaffle} />
+      <div className="fixed bottom-0 left-0 w-full p-4 shadow-md z-50">
+        <DrawButton raffleId={raffleId} onDrawSuccess={fetchRaffle} />
+      </div>
     </div>
   );
 };

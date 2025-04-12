@@ -76,7 +76,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
           <input
             type="number"
             name="winnersCount"
-            value={form.winnersCount}
+            value={parseInt(form.winnersCount)}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
           />

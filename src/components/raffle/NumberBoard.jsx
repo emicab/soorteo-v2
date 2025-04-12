@@ -12,6 +12,8 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
   const [dni, setDni] = useState("");
   const [showReceipt, setShowReceipt] = useState(false);
   const [receiptData, setReceiptData] = useState(null);
+  const [seller, setSeller] = useState([]);
+  const [selectedSeller, setSelectedSeller] = useState();
 
   const URL = import.meta.env.VITE_URL;
 
@@ -44,6 +46,7 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
           numbers: selectedNumbers,
           buyerName: name,
           buyerDni: dni,
+          sellerId: selectedSeller,
         }),
       });
       if (res.ok) {
@@ -67,6 +70,16 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
     }
   };
 
+  const fetchSellers = async () => {
+    try {
+      const res = await fetch(`${URL}/api/sellers/${raffleId}/sellers`);
+      const data = await res.json();
+      setSeller(data);
+    } catch (err) {
+      console.error("Error obteniendo vendedores:", err);
+    }
+  };
+
   const approvePayment = async (numberId) => {
     try {
       const res = await fetch(`${URL}/api/numbers/approve/${numberId}`, {
@@ -80,7 +93,10 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
   };
 
   useEffect(() => {
-    if (raffleId) fetchNumbers();
+    if (raffleId) {
+      fetchNumbers();
+      fetchSellers();
+    }
   }, [raffleId]);
 
   return (
@@ -108,6 +124,9 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
           setName={setName}
           setDni={setDni}
           reserveNumber={reserveNumber}
+          sellers={seller}
+          selectedSeller={selectedSeller}
+          setSelectedSeller={setSelectedSeller}
         />
       )}
       <ReservationReceiptModal
@@ -116,7 +135,7 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
         buyerName={receiptData?.buyerName}
         buyerDni={receiptData?.buyerDni}
         title={receiptData?.title}
-        tickets={receiptData?.tickets} 
+        tickets={receiptData?.tickets}
       />
     </div>
   );

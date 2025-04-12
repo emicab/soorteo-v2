@@ -9,12 +9,9 @@ import useAuthStore from "./store/useAuthStore";
 
 import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
-import QuickRaffle from "./components/raffle/QuickRaffle";
 import Dashboard from "./components/Dashboard"; // Ruta protegida
 import Navbar from "./components/UI/Navbar";
 import PublicRaffleView from "./pages/PublicRaffleView";
-import SearchRaffle from "./components/raffle/SearchRaffle";
-import SearchHistory from "./components/raffle/SearchHistory";
 import HomePage from "./pages/HomePage";
 
 const PrivateRoute = ({ element }) => {
@@ -26,7 +23,6 @@ const PublicRoute = ({ element }) => {
   const { user } = useAuthStore();
   return user ? <Navigate to="/dashboard" /> : element;
 };
-
 
 const App = () => {
   return (

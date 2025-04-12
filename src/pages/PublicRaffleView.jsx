@@ -37,11 +37,35 @@ const PublicRaffleView = () => {
   if (!raffle)
     return <div className="text-center mt-10">Cargando sorteo...</div>;
 
+  if (raffle?.status === "finished") {
+    return <ScreenWinners results={results} />;
+  }
+  
   return (
     <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-sm">
-      <h1 className="text-3xl font-bold text-gray-800 mb-2 uppercase">
-        {raffle.title}
-      </h1>
+      <div className="flex mb-4 items-center justify-between">
+          <h2 className="text-3xl font-bold text-gray-800  uppercase">
+            {raffle.title}
+          </h2>
+          <div>
+            <span
+              className={`text-sm font-semibold px-3 py-1 rounded-full 
+            ${
+              raffle.status === "pending"
+                ? "bg-yellow-100 text-yellow-700"
+                : raffle.status === "active"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+            >
+              {raffle.status === "pending"
+                ? "Pendiente"
+                : raffle.status === "active"
+                ? "Activo"
+                : "Finalizado"}
+            </span>
+          </div>
+        </div>
       <p className="text-gray-600 mb-4 text-lg">{raffle.description}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 bg-gray-100 p-4 rounded-md">

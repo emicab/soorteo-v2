@@ -12,9 +12,7 @@ const SearchRaffle = () => {
     if (!shortCode.trim()) return;
 
     try {
-      const res = await fetch(
-        `${URL}/api/raffles/shortcode/${shortCode}`
-      );
+      const res = await fetch(`${URL}/api/raffles/shortcode/${shortCode}`);
       if (!res.ok) throw new Error("Sorteo no encontrado");
 
       const raffle = await res.json();
@@ -28,7 +26,9 @@ const SearchRaffle = () => {
       ].slice(0, 5);
       localStorage.setItem("raffleHistory", JSON.stringify(updated));
 
-      navigate(`/raffle/${raffle.id}/public`);
+      setTimeout(() => {
+        navigate(`/raffles/${raffle.id}/public`);
+      }, 50);
     } catch (err) {
       setError("No se encontró ningún sorteo con ese código.");
     }
@@ -44,9 +44,11 @@ const SearchRaffle = () => {
           type="text"
           value={shortCode}
           onChange={(e) => setShortCode(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           placeholder="Ej: ABC123"
           className="flex-1 border border-gray-300 px-3 py-2 rounded"
         />
+
         <button
           onClick={handleSearch}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

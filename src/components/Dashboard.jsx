@@ -48,11 +48,17 @@ const Dashboard = () => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-
+      
       if (response.ok) {
         setRaffles((prev) => prev.filter((raffle) => raffle.id !== id));
+        // eliminamos el sorteo del localStorage
+        const raffles = JSON.parse(localStorage.getItem("raffleHistory") || "[]");
+        const newRaffles = raffles.filter((raffle) => raffle.id !== id);
+        localStorage.setItem("raffleHistory", JSON.stringify(newRaffles));
+
       }
     } catch (error) {
+      console.log("DeleteRaffle:: ", raffles)
       console.error("Error eliminando sorteo:", error);
     }
   };

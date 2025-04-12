@@ -1,6 +1,7 @@
 import { useState } from "react";
 import InputField from "../UI/InputField";
 import useAuthStore from "../../store/useAuthStore";
+import SellersForm from "../sellers/SellersForm";
 
 const CreateRaffle = ({ onClose }) => {
   const { token } = useAuthStore();
@@ -16,14 +17,26 @@ const CreateRaffle = ({ onClose }) => {
     winnersCount: ""
   });
 
+  const [hasSellers, setHasSellers] = useState(false);
+  const [sellers, setSellers] = useState([""]);
+
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSellerChange = (index, value) => {
+    const updated = [...sellers];
+    updated[index] = value;
+    setSellers(updated);
+  };
+
+  const addSellerInput = () => {
+    setSellers([...sellers, ""]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData)
-
     const res = await fetch(`${import.meta.env.VITE_URL}/api/raffles`, {
       method: "POST",
       headers: {
@@ -32,10 +45,24 @@ const CreateRaffle = ({ onClose }) => {
       },
       body: JSON.stringify(formData),
     });
-
     const data = await res.json();
+    console.log(data)
     if (res.ok) {
-      // TODO: redirigir o limpiar el formulario
+      // Si hay vendedores, hacer POST /api/sellers
+      if (hasSellers && sellers.some(s => s.trim() !== "")) {
+        await fetch(`${import.meta.env.VITE_URL}/api/sellers`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            raffleId: data.id,
+            sellers: sellers.filter(s => s.trim() !== "")
+          }),
+        });
+      }
+
       setFormData({
         title: "",
         description: "",
@@ -45,7 +72,11 @@ const CreateRaffle = ({ onClose }) => {
         whatsapp: "",
         alias: "",
         winnersCount: ""
+
       });
+      setHasSellers(false);
+      setSellers([""]);
+      onClose();
     } else {
       console.error("Error al crear sorteo:", data);
     }
@@ -64,24 +95,31 @@ const CreateRaffle = ({ onClose }) => {
 
       <hr className="my-4" />
 
-      <InputField
-        label="WhatsApp del creador"
-        name="whatsapp"
-        value={formData.whatsapp}
-        onChange={handleChange}
-        placeholder="Ej: +5492901234567"
-      />
-      <InputField
-        label="Alias o método de pago"
-        name="alias"
-        value={formData.alias}
-        onChange={handleChange}
-        placeholder="Ej: alias.mp"
-      />
+      <InputField label="WhatsApp del creador" name="whatsapp" value={formData.whatsapp} onChange={handleChange} placeholder="Ej: +5492901234567" />
+      <InputField label="Alias o método de pago" name="alias" value={formData.alias} onChange={handleChange} placeholder="Ej: alias.mp" />
 
-      <button 
-        onClick={onClose}
-        type="submit" className="bg-blue-600 text-white px-4 py-2 rounded mt-4">
+      <hr className="my-4" />
+
+      <label className="flex items-center space-x-2 mb-2">
+        <input type="checkbox" checked={hasSellers} onChange={(e) => setHasSellers(e.target.checked)} />
+        <span className="text-sm">¿Hay más de un vendedor?</span>
+      </label>
+
+     {/*  {hasSellers && sellers.map((seller, index) => (
+        <div key={index} className="mb-2">
+          <InputField
+            label={`Nombre del vendedor ${index + 1}`}
+            value={seller}
+            onChange={(e) => handleSellerChange(index, e.target.value)}
+          />
+        </div>
+      ))} */}
+
+      {hasSellers && (
+        <SellersForm sellers={sellers} setSellers={setSellers} />
+      )}
+
+      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded mt-4">
         Crear Sorteo
       </button>
     </form>
