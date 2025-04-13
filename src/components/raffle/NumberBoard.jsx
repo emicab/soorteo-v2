@@ -15,6 +15,12 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
   const [seller, setSeller] = useState([]);
   const [selectedSeller, setSelectedSeller] = useState();
 
+  const [filters, setFilters] = useState({
+    available: true,
+    reserved: true,
+    sold: true,
+  });
+
   const URL = import.meta.env.VITE_URL;
 
   const fetchNumbers = async () => {
@@ -98,11 +104,50 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
     }
   }, [raffleId]);
 
+  const filteredNumbers = numbers.filter((n) => filters[n.status]);
+
   return (
     <div className="mt-2">
-      <div className="h-64 py-4 overflow-hidden rounded-lg shadow-lg overflow-y-auto">
+      <div className="flex gap-2 flex-wrap px-2">
+        {[
+          {
+            key: "available",
+            label: "Disponibles",
+            color: "bg-green-100 text-green-700",
+          },
+          {
+            key: "reserved",
+            label: "Reservados",
+            color: "bg-yellow-100 text-yellow-700",
+          },
+          { key: "sold", label: "Vendidos", color: "bg-red-100 text-red-700" },
+        ].map(({ key, label, color }) => {
+          const isActive = filters[key];
+          return (
+            <div
+              key={key}
+              onClick={() =>
+                setFilters((prev) => ({ ...prev, [key]: !prev[key] }))
+              }
+              className={`
+          cursor-pointer px-4 py-1 rounded-full font-semibold text-sm
+          transition-colors duration-200
+          ${
+            isActive
+              ? `${color} border border-opacity-50 border-gray-300`
+              : "bg-gray-100 text-gray-500"
+          }
+        `}
+            >
+              {label}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="h-64 py-2 overflow-hidden rounded-lg shadow-lg overflow-y-auto">
         <ul className="grid grid-cols-4 justify-items-center grid-row-5 md:grid-cols-8 md:px-2 gap-2">
-          {numbers.map((n) => (
+          {filteredNumbers.map((n) => (
             <NumberItem
               key={n.id}
               number={n}

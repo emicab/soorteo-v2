@@ -14,10 +14,10 @@ const NumberItem = ({
   const isSelected = selectedNumbers.includes(number.number);
 
   return (
-    <li className="flex flex-col justify-center items-center h-28">
+    <li className="flex flex-col justify-between items-center h-24 mt-4 w-full">
       <div
-        className={`p-1 w-12 h-12 leading-10 text-center rounded-full text-xl cursor-pointer group/item  transition-all
-        ${getColor(number.status)} ${isSelected ? "ring-2 ring-blue-500" : ""}`}
+        className={`p-1 w-12 h-12 leading-10 text-center rounded-full text-xl cursor-pointer group/item transition-all
+    ${getColor(number.status)} ${isSelected ? "ring-3 ring-offset-1 ring-blue-500" : ""}`}
         onClick={() => {
           if (!isCreator && number.status === "available")
             toggleSelect(number.number);
@@ -25,18 +25,30 @@ const NumberItem = ({
       >
         {number.number}
       </div>
-      {number.status === "available" && ( <p className="z-1 text-gray-400">Disponible</p> )}
-      {number.status === "reserved" && ( <p className="z-1 text-gray-400">Reservado</p> )}
-      {!isCreator && number.status === "sold" && ( <p className="z-1 text-red-400">Comprado</p> )}
+
+      {/* Estado visible para todos */}
+      {number.status === "available" && (
+        <p className="text-xs text-gray-400">Disponible</p>
+      )}
+      {number.status === "reserved" && (
+        <p className="text-xs text-gray-400">Reservado</p>
+      )}
+      {!isCreator && number.status === "sold" && (
+        <p className="text-xs text-red-400">Comprado</p>
+      )}
+
+      {/* Info adicional para el creador */}
       {isCreator && number.status !== "available" && (
-        <div className="text-lg flex">
+        <div className="text-xs w-20 text-center overflow-hidden text-ellipsis whitespace-nowrap">
           {number.status === "sold" && (
-            <p className="text-sm text-gray-600">{number.buyerName} - {number.buyerDni}</p>
+            <p className="text-gray-600">
+              {number.buyerName} - {number.buyerDni}
+            </p>
           )}
           {number.status === "reserved" && (
             <button
               onClick={() => approvePayment(number.id)}
-              className="text-xs bg-blue-500 text-white px-2 py-1 rounded z-2 cursor-pointer"
+              className="mt-1 bg-blue-500 text-white px-2 py-0.5 rounded text-xs"
             >
               Aceptar
             </button>

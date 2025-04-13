@@ -80,9 +80,9 @@ const ReserveForm = ({
           type="checkbox"
           checked={acceptedTerms}
           onChange={(e) => setAcceptedTerms(e.target.checked)}
-          className="mt-1 w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded"
+          className="mt-1 w-7 h-7 text-blue-600 bg-gray-100 border-gray-300 rounded"
         />
-        <p className="text-sm text-gray-600 leading-tight">
+        <p className="text-sm font-semibold text-gray-600 my-auto leading-tight">
           Acepto los{" "}
           <a
             href="/terminos"
@@ -100,7 +100,7 @@ const ReserveForm = ({
         disabled={!selectedNumbers.length}
         className={`w-full py-2 px-4 rounded-md text-white font-semibold transition duration-200
           ${
-            !acceptedTerms
+            (!acceptedTerms || name.length < 3 || dni.length !== 3)
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-blue-600 hover:bg-blue-700"
           }`}

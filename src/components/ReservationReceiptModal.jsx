@@ -46,8 +46,9 @@ const ReservationReceiptModal = ({
         </div>
 
         <div className="mt-6 text-center">
+          <p className="text-xs font-semibold text-gray-600">Guardá este comprobante sacandole captura o guardá el codigo.</p>
           <p className="text-xs text-gray-500">
-            Números reservados correctamente. El organizador revisará tu reserva
+            Tus números fueron reservados correctamente. El organizador revisará tu reserva
             y confirmará el pago a la brevedad.
           </p>
         </div>
