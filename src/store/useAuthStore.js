@@ -1,34 +1,36 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { jwtDecode } from "jwt-decode";
 
-const useAuthStore = create((set) => ({
-  user: JSON.parse(localStorage.getItem("user")) || null,
-  token: localStorage.getItem("token") || null,
-  
+const useAuthStore = create(persist(
+  (set, get) => ({
+    user: null,
+    token: null,
 
-  login: (userData, token) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", token);
-    set({ user: userData, token });
-  },
+    login: (userData, token) => {
+      set({ user: userData, token });
+    },
 
-  logout: () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    set({ user: null, token: null });
-  },
+    logout: () => {
+      set({ user: null, token: null });
+    },
 
-  getUserId: () => {
-    const token = localStorage.getItem("token");
-    if (!token) return null;
-    try {
-      const decoded = jwtDecode(token);
-      return decoded.id;
-    } catch (err) {
-      console.error("Token inválido", err);
-      return null;
+    getUserId: () => {
+      const token = get().token;
+      if (!token) return null;
+      try {
+        const decoded = jwtDecode(token);
+        return decoded.id;
+      } catch (err) {
+        console.error("Token inválido", err);
+        return null;
+      }
     }
+  }),
+  {
+    name: "auth-storage", // nombre de la clave en localStorage
+    partialize: (state) => ({ token: state.token, user: state.user }), // qué guardar
   }
-}));
+));
 
 export default useAuthStore;
