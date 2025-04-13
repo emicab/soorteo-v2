@@ -59,7 +59,6 @@ const RaffleDetail = () => {
     fetchRaffle();
   }, [id, token]);
 
-  console.log(raffle)
 
   if (!raffle) return <p className="text-center mt-10">Cargando sorteo...</p>;
 

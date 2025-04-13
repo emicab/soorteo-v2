@@ -33,10 +33,10 @@ const Navbar = () => {
 
       {/* MODAL */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 px-4 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <button onClick={() => setModalOpen(false)} className="absolute top-2 right-2 text-gray-600">✖</button>
-            {activeForm === "login" ? <LoginForm /> : <RegisterForm />}
+            {activeForm === "login" ? <LoginForm onClose={() => setModalOpen(false)} /> : <RegisterForm onClose={() => setModalOpen(false)} />}
             <p className="mt-4 text-center">
               {activeForm === "login" ? (
                 <span>

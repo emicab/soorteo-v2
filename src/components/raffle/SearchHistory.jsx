@@ -29,8 +29,8 @@ const SearchHistory = () => {
       <h3 className="text-md font-medium mb-2">Sorteos visitados recientemente:</h3>
       <ul className="list-disc pl-4 space-y-1 text-lg text-blue-700">
         {history.map((raffle) => (
-          <li key={raffle.id} className="text-lg">
-            <Link to={`/raffles/${raffle.id}/public`} className=" flex gap-2 items-center">
+          <li key={raffle.shortCode} className="text-lg">
+            <Link to={`/${raffle.shortCode}`} className=" flex gap-2 items-center">
               <p className="uppercase font-semibold hover:underline">{raffle.title}</p>
               <p className="bg-gray-200 text-md px-2 py-[1px] rounded-lg">{raffle.shortCode}</p>
               

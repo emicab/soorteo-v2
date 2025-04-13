@@ -1,9 +1,8 @@
 const ScreenWinners = ({ results }) => {
   if (!results || results.length === 0) return null;
-  console.log("Ganadores:", results);
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 px-4">
       <h2 className="text-2xl font-bold text-center text-green-700 mb-4">
         🎉 Ganadores del sorteo
       </h2>

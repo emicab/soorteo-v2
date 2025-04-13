@@ -51,7 +51,6 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
       });
       if (res.ok) {
         const data = await res.json();
-        console.log(data.tickets);
         setReceiptData({
           buyerName: name,
           buyerDni: dni,

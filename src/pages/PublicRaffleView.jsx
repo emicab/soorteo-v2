@@ -1,41 +1,91 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import NumberBoard from "../components/raffle/NumberBoard";
+import ScreenWinners from "../components/raffle/ScreenWinners";
+import RaffleLoader from "../components/UI/RaffleLoader";
+import RaffleNotFound from "../components/UI/RaffleNotFound";
 
 const PublicRaffleView = () => {
-  const { id } = useParams();
+  const { id, shortcode } = useParams();
   const [raffle, setRaffle] = useState(null);
   const [prizes, setPrizes] = useState([]);
   const [numbers, setNumbers] = useState([]);
+  const [results, setResults] = useState([]);
+  const [notFound, setNotFound] = useState(false)
 
   const URL = import.meta.env.VITE_URL;
 
   useEffect(() => {
-    const fetchRaffleData = async () => {
-      const res = await fetch(`${URL}/api/raffles/${id}`);
-      const data = await res.json();
-      setRaffle(data);
+    const loadRaffle = async () => {
+      try {
+        let raffleData;
+
+        if (id) {
+          // Ruta tradicional con ID
+          const res = await fetch(`${URL}/api/raffles/${id}`);
+          raffleData = await res.json();
+        } else if (shortcode) {
+          // Nueva ruta con shortCode
+          const res = await fetch(`${URL}/api/raffles/shortcode/${shortcode}`);
+          raffleData = await res.json();
+        }
+
+        if (raffleData?.id) {
+          setRaffle(raffleData);
+
+          const [prizesRes, numbersRes] = await Promise.all([
+            fetch(`${URL}/api/prizes/${raffleData.id}`),
+            fetch(`${URL}/api/raffles/numbers/${raffleData.id}`),
+          ]);
+
+          const prizesData = await prizesRes.json();
+          const numbersData = await numbersRes.json();
+
+          setPrizes(prizesData);
+          setNumbers(numbersData);
+        }
+      } catch (err) {
+        console.error("Error al cargar sorteo:", err);
+        setNotFound(true)
+      }
     };
 
-    const fetchPrizes = async () => {
-      const res = await fetch(`${URL}/api/prizes/${id}`);
-      const data = await res.json();
-      setPrizes(data);
+    loadRaffle();
+  }, [id, shortcode]);
+
+  useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        const res = await fetch(`${URL}/api/raffles/${raffle.id}/results`);
+        if (!res.ok) {
+          if (res.status === 404) {
+            console.warn("Resultados no encontrados.");
+            setNotFound(true);
+          } else {
+            throw new Error("Error al obtener resultados");
+          }
+          return;
+        }
+  
+        const data = await res.json();
+        if (!data || data.length === 0) {
+          setNotFound(true);
+        } else {
+          setResults(data);
+        }
+      } catch (err) {
+        console.error("Error al cargar ganadores:", err);
+        setNotFound(true);
+      }
     };
+  
+    if (raffle?.status === "finished") {
+      fetchResults();
+    }
+    if (notFound) return <RaffleNotFound />;
+  }, [raffle]);
 
-    const fetchNumbers = async () => {
-      const res = await fetch(`${URL}/api/raffles/numbers/${id}`);
-      const data = await res.json();
-      setNumbers(data);
-    };
-
-    fetchRaffleData();
-    fetchPrizes();
-    fetchNumbers();
-  }, [id]);
-
-  if (!raffle)
-    return <div className="text-center mt-10">Cargando sorteo...</div>;
+  if (!raffle) return <RaffleLoader />;
 
   if (raffle?.status === "finished") {
     return <ScreenWinners results={results} />;

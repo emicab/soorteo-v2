@@ -29,7 +29,6 @@ const RaffleCountdownDraw = ({ raffleId, onDrawCompleted, onClose }) => {
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
-      console.log(data);
 
       if (!res.ok) {
         alert(data.error || "Error al realizar el sorteo.");

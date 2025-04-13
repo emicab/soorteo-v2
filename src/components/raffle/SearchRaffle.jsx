@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { delayRedirect } from "../../utils/utils";
 
 const SearchRaffle = () => {
   const [shortCode, setShortCode] = useState("");
@@ -26,9 +27,7 @@ const SearchRaffle = () => {
       ].slice(0, 5);
       localStorage.setItem("raffleHistory", JSON.stringify(updated));
 
-      setTimeout(() => {
-        navigate(`/raffles/${raffle.id}/public`);
-      }, 50);
+      delayRedirect(navigate, `/${shortCode}`)
     } catch (err) {
       setError("No se encontró ningún sorteo con ese código.");
     }

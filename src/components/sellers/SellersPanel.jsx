@@ -11,7 +11,6 @@ const SellersPanel = ({ raffleId, pricePerNumber }) => {
       const res = await fetch(`${URL}/api/sellers/${raffleId}`);
       const data = await res.json();
       setSellers(data);
-      console.log(data)
     } catch (err) {
       console.error("Error al cargar vendedores:", err);
     }
@@ -23,7 +22,7 @@ const SellersPanel = ({ raffleId, pricePerNumber }) => {
       const res = await fetch(`${URL}/api/sellers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ raffleId, name: [newSeller] }),
+        body: JSON.stringify({ raffleId, sellers: [newSeller] }),
       });
       if (res.ok) {
         setNewSeller("");
@@ -52,7 +51,7 @@ const SellersPanel = ({ raffleId, pricePerNumber }) => {
 
   return (
     <div className="mt-8 bg-white border border-gray-200 rounded-lg shadow p-4">
-      <h3 className="text-xl font-semibold mb-4">🧑‍💼 Vendedores</h3>
+      <h3 className="text-xl font-semibold mb-4">🧑 Vendedores</h3>
 
       <div className="flex gap-2 mb-4">
         <input

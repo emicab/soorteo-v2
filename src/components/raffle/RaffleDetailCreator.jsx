@@ -6,58 +6,120 @@ import { jwtDecode } from "jwt-decode";
 import DrawButton from "../DrawButton";
 import ScreenWinners from "./ScreenWinners";
 import SellersPanel from "../sellers/SellersPanel";
+import { Link, useParams } from "react-router-dom";
+import RaffleLoader from "../UI/RaffleLoader";
 
 const URL = import.meta.env.VITE_URL;
 
-const RaffleDetailCreator = ({ raffleId, onBack }) => {
+const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
+  const { shortcode } = useParams();
   const { token } = useAuthStore();
+  const [raffleId, setRaffleId] = useState(propRaffleId || null);
   const [raffle, setRaffle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const [results, setResults] = useState([]);
+  const [isFinished, setIsFinished] = useState(false);
 
-  const fetchRaffle = async () => {
-    try {
-      const response = await fetch(`${URL}/api/raffles/${raffleId}/creator`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const data = await response.json();
-      console.log("Fetch raffle::", data);
-      if (response.ok) {
-        setRaffle(data);
-        if (token) {
-          const decoded = jwtDecode(token);
-          setIsOwner(decoded.id === data.ownerId);
+  useEffect(() => {
+    const fetchByShortCode = async () => {
+      try {
+        const res = await fetch(
+          `${URL}/api/raffles/creator/shortcode/${shortcode}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setRaffleId(data.id);
+        } else {
+          console.error(
+            "No se encontró el sorteo por shortcode:",
+            data.message
+          );
         }
-      } else {
-        console.error("Error al obtener el sorteo:", data);
+      } catch (err) {
+        console.error("Error al buscar sorteo por shortcode:", err);
       }
-    } catch (error) {
-      console.error("Error de red al obtener el sorteo:", error);
-    } finally {
-      setLoading(false);
+    };
+
+    if (!propRaffleId && shortcode) {
+      fetchByShortCode();
     }
-  };
+  }, [shortcode, propRaffleId]);
 
   useEffect(() => {
-    if (raffleId) fetchRaffle();
-  }, [raffleId]);
+    const fetchRaffle = async () => {
+      try {
+        const response = await fetch(`${URL}/api/raffles/${raffleId}/creator`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
 
-  console.log(raffle);
+        if (response.ok) {
+          setRaffle(data);
+          if (token) {
+            const decoded = jwtDecode(token);
+            setIsOwner(decoded.id === data.ownerId);
+          }
+        } else {
+          console.error("Error al obtener el sorteo:", data);
+        }
+      } catch (error) {
+        console.error("Error de red al obtener el sorteo:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (raffleId) {
+      fetchRaffle();
+    }
+  }, [raffleId, token]);
+
+  // Cargar resultados si ya está terminado
   useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        const res = await fetch(`${URL}/api/raffles/${raffle.id}/results`);
+        if (!res.ok) {
+          if (res.status === 404) {
+            console.warn("Resultados no encontrados.");
+            setNotFound(true);
+          } else {
+            throw new Error("Error al obtener resultados");
+          }
+          return;
+        }
+  
+        const data = await res.json();
+        if (!data || data.length === 0) {
+          setNotFound(true);
+        } else {
+          setResults(data);
+        }
+      } catch (err) {
+        console.error("Error al cargar ganadores:", err);
+        setNotFound(true);
+      }
+    };
+  
     if (raffle?.status === "finished") {
-      fetch(`${URL}/api/raffles/${raffle.id}/results`)
-        .then((res) => res.json())
-        .then((data) => setResults(data))
-        .catch((err) => console.error("Error al cargar ganadores:", err));
+      fetchResults();
     }
   }, [raffle]);
 
-  if (loading) return <p>Cargando sorteo...</p>;
+  if (loading)
+    return (
+      <RaffleLoader />
+    );
   if (!raffle) return <p>No se pudo cargar el sorteo.</p>;
 
   const totalSold = raffle.tickets.filter((t) => t.status === "sold").length;
@@ -74,17 +136,17 @@ const RaffleDetailCreator = ({ raffleId, onBack }) => {
   return (
     <div className="container mx-auto p-4 mb-10">
       <div className="container mx-autox ">
-        <button onClick={onBack} className="text-blue-500 underline mb-4">
+        <Link to="/dashboard" className="text-blue-500 underline mb-8">
           ← Volver
-        </button>
+        </Link>
 
-        <div className="flex mb-4 items-center justify-between">
+        <div className="flex my-4 items-center justify-between">
           <h2 className="text-3xl font-bold text-gray-800  uppercase">
             {raffle.title}
           </h2>
           <div>
             <span
-              className={`text-sm font-semibold px-3 py-1 rounded-full 
+              className={`text-lg font-semibold px-3 py-1 rounded-full 
             ${
               raffle.status === "pending"
                 ? "bg-yellow-100 text-yellow-700"

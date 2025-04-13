@@ -13,6 +13,7 @@ import Dashboard from "./components/Dashboard"; // Ruta protegida
 import Navbar from "./components/UI/Navbar";
 import PublicRaffleView from "./pages/PublicRaffleView";
 import HomePage from "./pages/HomePage";
+import RaffleDetailCreator from "./components/raffle/RaffleDetailCreator";
 
 const PrivateRoute = ({ element }) => {
   const { user } = useAuthStore();
@@ -39,9 +40,13 @@ const App = () => {
           path="/register"
           element={<PublicRoute element={<RegisterForm />} />}
         />
-        <Route path="/raffles/:id/public" element={<PublicRaffleView />} />
+        <Route path="/:shortcode" element={<PublicRaffleView />} />
 
         {/* Rutas protegidas */}
+        <Route
+          path="/:shortcode/creator"
+          element={<PrivateRoute element={<RaffleDetailCreator />} />}
+        />
         <Route
           path="/dashboard"
           element={<PrivateRoute element={<Dashboard />} />}
