@@ -13,7 +13,6 @@ const LoginForm = ({ onClose }) => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    console.log(form);
 
     setErrors({ ...errors, [e.target.name]: "" }); // Limpiar error al escribir
   };
