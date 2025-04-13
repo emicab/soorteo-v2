@@ -8,5 +8,9 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   define: {
     'process.env.VITE_URL': JSON.stringify(process.env.VITE_URL)
-  }
+  },
+  base: '/',
+  build: {
+    outDir: './dist',
+  },
 })
