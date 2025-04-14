@@ -8,6 +8,7 @@ import ScreenWinners from "./ScreenWinners";
 import SellersPanel from "../sellers/SellersPanel";
 import { Link, useParams } from "react-router-dom";
 import RaffleLoader from "../UI/RaffleLoader";
+import CheckVerified from "../UI/CheckVerified";
 
 const URL = import.meta.env.VITE_URL;
 
@@ -98,7 +99,7 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
           }
           return;
         }
-  
+
         const data = await res.json();
         if (!data || data.length === 0) {
           setNotFound(true);
@@ -110,16 +111,13 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
         setNotFound(true);
       }
     };
-  
+
     if (raffle?.status === "finished") {
       fetchResults();
     }
   }, [raffle]);
 
-  if (loading)
-    return (
-      <RaffleLoader />
-    );
+  if (loading) return <RaffleLoader />;
   if (!raffle) return <p>No se pudo cargar el sorteo.</p>;
 
   const totalSold = raffle.tickets.filter((t) => t.status === "sold").length;
@@ -140,10 +138,11 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
           ← Volver
         </Link>
 
-        <div className="flex my-4 items-center justify-between">
+        <div className="flex my-2 items-center justify-between">
           <h2 className="text-3xl font-bold text-gray-800  uppercase">
             {raffle.title}
           </h2>
+
           <div>
             <span
               className={`text-lg font-semibold px-3 py-1 rounded-full 
@@ -162,6 +161,14 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
                 : "Finalizado"}
             </span>
           </div>
+        </div>
+
+        <div className="flex items-center gap-1 mb-2">
+          <p className="text-gray-500 text-sm">Sorteo creado por: </p>
+          <p className="text-sm font-semibold text-gray-700">
+            {raffle.owner.username}
+          </p>
+          <CheckVerified verified={true} />
         </div>
 
         <div className="bg-white rounded-lg shadow-md border border-gray-200 p-5 space-y-4">

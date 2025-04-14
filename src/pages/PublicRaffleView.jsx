@@ -4,6 +4,7 @@ import NumberBoard from "../components/raffle/NumberBoard";
 import ScreenWinners from "../components/raffle/ScreenWinners";
 import RaffleLoader from "../components/UI/RaffleLoader";
 import RaffleNotFound from "../components/UI/RaffleNotFound";
+import CheckVerified from "../components/UI/CheckVerified";
 
 const PublicRaffleView = () => {
   const { id, shortcode } = useParams();
@@ -117,7 +118,13 @@ const PublicRaffleView = () => {
           </div>
         </div>
       <p className="text-gray-600 mb-4 text-lg">{raffle.description}</p>
-
+      <div className="flex items-center gap-1 mb-2">
+          <p className="text-gray-500 text-sm">Sorteo creado por: </p>
+          <p className="text-sm font-semibold text-gray-700">
+            {/* {raffle.owner.username} */}
+          </p>
+          <CheckVerified verified={true} />
+        </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 bg-gray-100 p-4 rounded-md">
         <div>
           <p className="text-sm text-gray-500">💵 Precio por número</p>
