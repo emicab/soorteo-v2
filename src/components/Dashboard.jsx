@@ -4,8 +4,7 @@ import CreateRaffle from "./raffle/CreateRaffle";
 import EditRaffle from "./raffle/EditRaffle";
 import { useNavigate } from "react-router-dom";
 
-const URL = "https://db-sorteo.onrender.com";
-
+const URL = import.meta.env.VITE_URL;
 
 const Dashboard = () => {
   const { token, getUserId } = useAuthStore();
