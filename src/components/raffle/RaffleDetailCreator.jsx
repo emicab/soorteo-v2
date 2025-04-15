@@ -20,7 +20,6 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const [results, setResults] = useState([]);
-  const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
     const fetchByShortCode = async () => {
@@ -93,7 +92,6 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
         if (!res.ok) {
           if (res.status === 404) {
             console.warn("Resultados no encontrados.");
-            setNotFound(true);
           } else {
             throw new Error("Error al obtener resultados");
           }
@@ -101,14 +99,10 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
         }
 
         const data = await res.json();
-        if (!data || data.length === 0) {
-          setNotFound(true);
-        } else {
-          setResults(data);
-        }
+        setResults(data);
+
       } catch (err) {
         console.error("Error al cargar ganadores:", err);
-        setNotFound(true);
       }
     };
 
@@ -131,6 +125,8 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
     return <ScreenWinners results={results} />;
   }
 
+  console.log(raffle)
+
   return (
     <div className="container mx-auto p-4 mb-10">
       <div className="container mx-autox ">
@@ -146,19 +142,18 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
           <div>
             <span
               className={`text-lg font-semibold px-3 py-1 rounded-full 
-            ${
-              raffle.status === "pending"
-                ? "bg-yellow-100 text-yellow-700"
-                : raffle.status === "active"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-700"
-            }`}
+            ${raffle.status === "pending"
+                  ? "bg-yellow-100 text-yellow-700"
+                  : raffle.status === "active"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
             >
               {raffle.status === "pending"
                 ? "Pendiente"
                 : raffle.status === "active"
-                ? "Activo"
-                : "Finalizado"}
+                  ? "Activo"
+                  : "Finalizado"}
             </span>
           </div>
         </div>
@@ -168,7 +163,7 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
           <p className="text-sm font-semibold text-gray-700">
             {raffle.owner.username}
           </p>
-          <CheckVerified verified={true} />
+          <CheckVerified verified={raffle.owner.verified} />
         </div>
 
         <div className="bg-white rounded-lg shadow-md border border-gray-200 p-5 space-y-4">
