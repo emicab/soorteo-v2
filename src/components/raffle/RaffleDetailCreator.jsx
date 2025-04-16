@@ -12,7 +12,7 @@ import CheckVerified from "../UI/icons/CheckVerified";
 
 const URL = import.meta.env.VITE_URL;
 
-const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
+const RaffleDetailCreator = ({ raffleId: propRaffleId }) => {
   const { shortcode } = useParams();
   const { token } = useAuthStore();
   const [raffleId, setRaffleId] = useState(propRaffleId || null);
@@ -20,6 +20,32 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const [results, setResults] = useState([]);
+
+  const fetchRaffle = async () => {
+    try {
+      const response = await fetch(`${URL}/api/raffles/${raffleId}/creator`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setRaffle(data);
+        if (token) {
+          const decoded = jwtDecode(token);
+          setIsOwner(decoded.id === data.ownerId);
+        }
+      } else {
+        console.error("Error al obtener el sorteo:", data);
+      }
+    } catch (error) {
+      console.error("Error de red al obtener el sorteo:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchByShortCode = async () => {
@@ -53,31 +79,7 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
   }, [shortcode, propRaffleId]);
 
   useEffect(() => {
-    const fetchRaffle = async () => {
-      try {
-        const response = await fetch(`${URL}/api/raffles/${raffleId}/creator`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
 
-        if (response.ok) {
-          setRaffle(data);
-          if (token) {
-            const decoded = jwtDecode(token);
-            setIsOwner(decoded.id === data.ownerId);
-          }
-        } else {
-          console.error("Error al obtener el sorteo:", data);
-        }
-      } catch (error) {
-        console.error("Error de red al obtener el sorteo:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
     if (raffleId) {
       fetchRaffle();
@@ -90,6 +92,7 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId, fetchRaffle }) => {
       try {
         const res = await fetch(`${URL}/api/raffles/${raffle.id}/results`);
         if (!res.ok) {
+
           if (res.status === 404) {
             console.warn("Resultados no encontrados.");
           } else {

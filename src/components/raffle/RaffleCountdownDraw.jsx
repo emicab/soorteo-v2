@@ -1,4 +1,3 @@
-import { i } from "motion/react-client";
 import { useEffect, useState } from "react";
 
 const RaffleCountdownDraw = ({ raffleId, onDrawCompleted, onClose }) => {

@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 const ReservationReceiptModal = ({
   show,
   onClose,
@@ -5,11 +7,25 @@ const ReservationReceiptModal = ({
   buyerDni,
   title,
   tickets = [],
-}) => {
+  }) => {
   if (!show || !Array.isArray(tickets) || tickets.length === 0) return null;
 
   const referenceCode = tickets[0]?.referenceCode;
   const numbers = tickets.map((t) => t.number).sort((a, b) => a - b);
+
+  useEffect(() => {
+    if (show) {
+      const reservationData = {
+        buyerName,
+        buyerDni,
+        referenceCode,
+        numbers,
+        title,
+      };
+      localStorage.setItem("latestReservation", JSON.stringify(reservationData));
+
+    }
+  }, [show, buyerName, buyerDni, referenceCode, numbers, title]);
 
   return (
     <div className="fixed inset-0 z-50 bg-gray-950/90 px-2 flex items-center justify-center">
@@ -21,35 +37,28 @@ const ReservationReceiptModal = ({
           &times;
         </button>
 
-        <h2 className="text-xl font-bold mb-2 text-center">
+        <h2 className="text-xl font-bold mb-1 text-center">
           Comprobante de Reserva
         </h2>
-        <p className="font-mono text-center bg-gray-100 px-2 py-1 rounded">
-          {referenceCode}
-        </p>
-        <p className="text-sm text-center mb-1">
-          <strong>Sorteo: </strong>
-          {title}
-        </p>
 
-        <div className="mt-4">
-          <p className="text-sm">
-            <strong>Nombre:</strong> {buyerName}
+        <div className="mt-2 flex flex-col items-center gap-2 justify-around">
+          <p className="text-sm text-center">
+            <strong>Sorteo: </strong>{title}
           </p>
-          <p className="text-sm">
-            <strong>DNI:</strong> {buyerDni}
-          </p>
-          <p className="text-sm">
-            <strong>Números reservados:</strong> {numbers.join(", ")}
-          </p>
-          
+          <div className="flex gap-2">
+            <p className="text-sm"><strong>Nombre:</strong> {buyerName}</p>
+            <p className="text-sm"><strong>DNI:</strong> {buyerDni}</p>
+          </div>
+          <p className="text-sm"><strong>Números reservados:</strong> {numbers.join(", ")}</p>
         </div>
 
+        <p className="font-mono text-center bg-gray-100 px-2 py-1 mt-2 rounded">
+          Codigo: {referenceCode}
+        </p>
         <div className="mt-6 text-center">
-          <p className="text-xs font-semibold text-gray-600">Guardá este comprobante sacandole captura o guardá el codigo.</p>
-          <p className="text-xs text-gray-500">
-            Tus números fueron reservados correctamente. El organizador revisará tu reserva
-            y confirmará el pago a la brevedad.
+          <p className="text-sm text-green-600 font-semibold">✔️ Ya tenes el alias copiado</p>
+          <p className="text-sm text-gray-700">
+            Ahora transferí el monto correspondiente y avisale al organizador que ya realizaste el pago.
           </p>
         </div>
       </div>

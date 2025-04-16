@@ -16,9 +16,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-gray-100 to-slate-200 p-2 flex justify-between items-center">
+    <nav className="bg-gradient-to-r from-gray-100 to-slate-200 py-2 px-3 flex justify-between items-center">
       <Link to="/" className="text-white text-2xl font-bold cursor-pointer">
-        <img src="/Logo_Negro.svg" alt="" className="w-20 md:w-36" />
+        <img src="/Logo_Negro.svg" alt="" className="w-26 md:w-36" />
       </Link>
       <div>
         {!user ? (
