@@ -5,3 +5,9 @@
     font-family: "Outfit";
     scrollbar-width: none;
 }
+
+@theme {
+    --color-primary: #009245;
+    --color-text: #333333;
+    --color-tertiary: #39B54A;
+}

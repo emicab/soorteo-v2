@@ -112,7 +112,7 @@ const Dashboard = () => {
                 Precio por número: <strong>${raffle.pricePerNumber}</strong>
               </p>
 
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-500 my-2">
                 📅 Creado: {new Date(raffle.createdAt).toLocaleString()}
               </p>
               <p className="text-xs text-gray-500">

@@ -3,6 +3,7 @@ import useAuthStore from "../../store/useAuthStore";
 import LoginForm from "../auth/LoginForm";
 import RegisterForm from "../auth/RegisterForm";
 import { Link } from "react-router-dom";
+import LogOut from "./icons/LogOut";
 
 const Navbar = () => {
   const { user, logout } = useAuthStore();
@@ -15,37 +16,35 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-800 p-4 flex justify-between items-center">
-      <Link to="/" className="text-white text-2xl font-bold">
-        Rifalo! 🎲
+    <nav className="bg-gradient-to-r from-gray-100 to-slate-200 p-2 flex justify-between items-center">
+      <Link to="/" className="text-white text-2xl font-bold cursor-pointer">
+        <img src="/Logo_Negro.svg" alt="" className="w-20 md:w-36" />
       </Link>
       <div>
         {!user ? (
           <>
             <button
               onClick={() => openModal("login")}
-              className="text-white mx-2"
+              className="text-text font-semibold cursor-pointer mx-2 hover:text-tertiary transition-all"
             >
               Iniciar Sesión
             </button>
             <button
               onClick={() => openModal("register")}
-              className="text-white mx-2"
+              className="text-text font-semibold cursor-pointer mx-2 hover:text-tertiary transition-all"
             >
               Registrarse
             </button>
           </>
         ) : (
-          <>
-            <a href="/dashboard" className="text-white mx-2">
+          <div className="flex items-center">
+            <Link to="/dashboard" className="text-text mx-2 font-semibold hover:text-tertiary transition-all">
               Mis Sorteos
-            </a>
-            <a href="/">
-              <button onClick={logout} className="text-red-400 mx-2">
-                Cerrar Sesión
-              </button>
-            </a>
-          </>
+            </Link>
+            <Link to="/" onClick={logout} className="cursor-pointer px-2 py-2 rounded-full hover:bg-gray-300 transition-all"> 
+              <LogOut className="w-6 h-6 text-red-600" />
+            </Link>
+          </div>
         )}
       </div>
 

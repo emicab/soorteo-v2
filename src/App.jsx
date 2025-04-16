@@ -2,7 +2,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useNavigate,
   Navigate,
 } from "react-router-dom";
 import useAuthStore from "./store/useAuthStore";
@@ -27,6 +26,7 @@ const PublicRoute = ({ element }) => {
 
 const App = () => {
   return (
+
     <Router>
       <Navbar />
       <Routes>

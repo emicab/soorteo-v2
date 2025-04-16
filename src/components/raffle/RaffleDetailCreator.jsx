@@ -8,7 +8,7 @@ import ScreenWinners from "./ScreenWinners";
 import SellersPanel from "../sellers/SellersPanel";
 import { Link, useParams } from "react-router-dom";
 import RaffleLoader from "../UI/RaffleLoader";
-import CheckVerified from "../UI/CheckVerified";
+import CheckVerified from "../UI/icons/CheckVerified";
 
 const URL = import.meta.env.VITE_URL;
 

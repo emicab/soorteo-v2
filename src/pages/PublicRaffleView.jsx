@@ -4,7 +4,8 @@ import NumberBoard from "../components/raffle/NumberBoard";
 import ScreenWinners from "../components/raffle/ScreenWinners";
 import RaffleLoader from "../components/UI/RaffleLoader";
 import RaffleNotFound from "../components/UI/RaffleNotFound";
-import CheckVerified from "../components/UI/CheckVerified";
+import CheckVerified from "../components/UI/icons/CheckVerified";
+import { Helmet } from "react-helmet";
 
 const PublicRaffleView = () => {
   const { id, shortcode } = useParams();
@@ -95,6 +96,15 @@ const PublicRaffleView = () => {
   console.log(raffle)
   
   return (
+    <>
+      <Helmet>
+        <title>{`Sorteo ${raffle.title}`} | Rifalo</title>
+        <meta name="description" content={raffle.description} />
+        <meta property="og:title" content={`Sorteo ${raffle.title} | Rifalo`} />
+        <meta property="og:description" content={raffle.description} />
+        <meta property="og:url" content={`https://rifalo.com.ar/${raffle.shortCode}`} />
+      </Helmet>
+    
     <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-sm">
       <div className="flex mb-4 items-center justify-between">
           <h2 className="text-3xl font-bold text-gray-800  uppercase">
@@ -209,6 +219,7 @@ const PublicRaffleView = () => {
         referenceCode={numbers}
       />
     </div>
+  </>
   );
 };
 

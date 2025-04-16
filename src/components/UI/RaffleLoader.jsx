@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import LogoRifalo from "./icons/LogoRifalo";
 
 const RaffleLoader = () => {
   const loadingPhrases = [
@@ -19,9 +20,11 @@ const RaffleLoader = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className="mt-4 text-green-700 font-semibold">
+    <div className="flex flex-col items-center justify-center">
+      <div className="mt-10">
+        <LogoRifalo className="w-30 fill-black"/>
+      </div>
+      <p className="mt-2 text-text font-semibold">
         {loadingPhrases[phraseIndex]}
       </p>
     </div>

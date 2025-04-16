@@ -65,7 +65,7 @@ const QuickRaffle = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-5 bg-white shadow-md rounded">
+    <div className="max-w-lg mx-auto mt-10 px-5 bg-white shadow-md rounded">
       {!showResult ? (
         <>
           <h2 className="text-xl font-bold text-center mb-4">🎲 Sorteo Rápido</h2>
