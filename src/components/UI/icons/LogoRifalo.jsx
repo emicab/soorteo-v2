@@ -5,7 +5,7 @@ const LogoRifalo = (props) => (
   initial={{scale: 0.2}}
   animate={{scale: [1, 1.2, 1]}}
   exit={{scale: 0.2}}
-  transition={{duration: 0.5, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse'}}
+  transition={{duration: 0.8, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse'}}
   
     xmlns="http://www.w3.org/2000/svg"
     data-name="Capa 1"

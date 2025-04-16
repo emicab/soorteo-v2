@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import useAuthStore from "../store/useAuthStore";
 import CreateRaffle from "./raffle/CreateRaffle";
 import EditRaffle from "./raffle/EditRaffle";
@@ -77,17 +78,25 @@ const Dashboard = () => {
         </h1>
 
         <div className="flex justify-center mb-4">
-          <button
+          <motion.button
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
             onClick={() => setShowCreateModal(true)}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
           >
             Crear Sorteo
-          </button>
+          </motion.button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {raffles.map((raffle) => (
-            <div
+          {raffles.map((raffle, index) => (
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.2, delay: index * 0.1, ease: "easeIn" }}
               key={raffle.id}
               className="bg-white border border-gray-200 shadow-md rounded-xl p-5 transition hover:shadow-lg"
             >
@@ -142,7 +151,7 @@ const Dashboard = () => {
                   </button>
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
 

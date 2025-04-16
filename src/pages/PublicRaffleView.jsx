@@ -93,8 +93,6 @@ const PublicRaffleView = () => {
     return <ScreenWinners results={results} />;
   }
 
-  console.log(raffle)
-  
   return (
     <>
       <Helmet>
