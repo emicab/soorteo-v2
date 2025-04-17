@@ -44,7 +44,7 @@ const NumberItem = ({
 
       {/* vista creador */}
       {isCreator && number.status === "reserved" && (
-        <p className="text-xs text-gray-400">{number.buyerName}</p>
+        <p className="text-xs text-gray-400 whitespace-nowrap">{number.buyerName}</p>
       )}
       {isCreator && number.status !== "available" && (
         <div className="text-xs w-20 text-center overflow-hidden text-ellipsis whitespace-nowrap">
