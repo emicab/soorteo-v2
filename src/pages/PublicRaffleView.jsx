@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import NumberBoard from "../components/raffle/NumberBoard";
 import ScreenWinners from "../components/raffle/ScreenWinners";
 import RaffleLoader from "../components/UI/RaffleLoader";
@@ -14,7 +14,6 @@ const PublicRaffleView = () => {
   const [numbers, setNumbers] = useState([]);
   const [results, setResults] = useState([]);
   const [notFound, setNotFound] = useState(false)
-  const navigate = useNavigate();
 
   const URL = import.meta.env.VITE_URL;
 
@@ -105,12 +104,11 @@ const PublicRaffleView = () => {
     if (!data) return;
     const { buyerName, buyerDni, referenceCode, numbers } = data;
 
-    const msg = `
-Hola, soy *${buyerName || "participante"} - DNI: ${buyerDni}*, reservé los números: ${numbers.join(", ")}. Ya hice la transferencia.
+    const msg = `Hola, soy *${buyerName || "participante"} - DNI: ${buyerDni}*, reservé los números: ${numbers.join(", ")}. Ya hice la transferencia.
 Código de reserva: *${referenceCode}*`;
 
     const whatsappURL = `https://wa.me/${raffle.whatsapp}?text=${encodeURIComponent(msg)}`;
-    localStorage.clear("latestReservation")
+    // localStorage.clear("latestReservation")
     return whatsappURL
   };
 
@@ -200,13 +198,13 @@ Código de reserva: *${referenceCode}*`;
           </div>
           <div>
             <p className="text-sm text-gray-500">📱 Contactate con el organizador</p>
-            <a
+            <Link
               className="text-blue-600 font-semibold underline cursor-pointer"
-              href={sendWhatsAppMessage()}
-              onClick={sendWhatsAppMessage}
+              to={sendWhatsAppMessage()}
+              
             >
               Ir al chat
-            </a>
+            </Link>
           </div>
         </div>
 
