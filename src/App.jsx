@@ -13,6 +13,7 @@ import Navbar from "./components/UI/Navbar";
 import PublicRaffleView from "./pages/PublicRaffleView";
 import HomePage from "./pages/HomePage";
 import RaffleDetailCreator from "./components/raffle/RaffleDetailCreator";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 const PrivateRoute = ({ element }) => {
   const { user } = useAuthStore();
@@ -41,6 +42,8 @@ const App = () => {
           element={<PublicRoute element={<RegisterForm />} />}
         />
         <Route path="/:shortcode" element={<PublicRaffleView />} />
+
+        <Route path="/termsAndConditions" element={<TermsAndConditions />} />
 
         {/* Rutas protegidas */}
         <Route

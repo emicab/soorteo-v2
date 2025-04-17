@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const ReserveForm = ({
   selectedNumbers,
@@ -90,13 +91,12 @@ const ReserveForm = ({
         />
         <p className="text-sm font-semibold text-gray-600 my-auto leading-tight">
           Acepto los{" "}
-          <a
-            href="/terminos"
-            target="_blank"
+          <Link
+            to="/termsAndConditions"
             className="text-blue-600 underline hover:text-blue-800"
           >
             términos y condiciones
-          </a>{" "}
+          </Link>{" "}
           del sorteo. El sitio solo funciona como intermediario.
         </p>
       </div>
