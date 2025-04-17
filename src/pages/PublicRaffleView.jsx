@@ -96,10 +96,6 @@ const PublicRaffleView = () => {
   const sendWhatsAppMessage = () => {
     const stored = localStorage.getItem("latestReservation");
 
-    //copiar alias en portapapeles
-    const alias = raffle.alias;
-    navigator.clipboard.writeText(alias)
-
     const data = JSON.parse(stored);
     if (!data) return;
     const { buyerName, buyerDni, referenceCode, numbers } = data;
@@ -201,7 +197,9 @@ Código de reserva: *${referenceCode}*`;
             <Link
               className="text-blue-600 font-semibold underline cursor-pointer"
               to={sendWhatsAppMessage()}
-              
+              onClick={() => {
+                navigator.clipboard.writeText(raffle.alias)
+              }}
             >
               Ir al chat
             </Link>

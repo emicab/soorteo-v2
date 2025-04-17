@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const ReserveForm = ({
   selectedNumbers,
@@ -27,7 +28,12 @@ const ReserveForm = ({
   };
 
   return (
-    <div className="mt-6 bg-white p-6 rounded-lg shadow-md space-y-4 border border-gray-200">
+    <motion.div 
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+    
+    className="mt-6 bg-white p-6 rounded-lg shadow-md space-y-4 border border-gray-200">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Nombre completo
@@ -80,7 +86,7 @@ const ReserveForm = ({
           type="checkbox"
           checked={acceptedTerms}
           onChange={(e) => setAcceptedTerms(e.target.checked)}
-          className="mt-1 w-7 h-7 text-blue-600 bg-gray-100 border-gray-300 rounded"
+          className="mt-1 min-w-7 h-7 text-blue-600 bg-gray-100 border-gray-300 rounded"
         />
         <p className="text-sm font-semibold text-gray-600 my-auto leading-tight">
           Acepto los{" "}
@@ -107,7 +113,7 @@ const ReserveForm = ({
       >
         Reservar números
       </button>
-    </div>
+    </motion.div>
   );
 };
 

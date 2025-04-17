@@ -128,6 +128,7 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId }) => {
     return <ScreenWinners results={results} />;
   }
 
+  console.log(raffle)
 
   return (
     <div className="container mx-auto p-4 mb-10">
