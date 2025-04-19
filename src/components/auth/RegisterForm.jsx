@@ -39,7 +39,7 @@ const Register = ({ onClose }) => {
         onClose();
         delayRedirect(navigate, "/login");
       } else {
-        setMessage(data.message || "Error en el registro.");
+        setMessage(data.error || "Error en el registro.");
       }
     } catch (error) {
       console.error("Error al registrar el usuario:", error); 
@@ -104,7 +104,7 @@ const Register = ({ onClose }) => {
       </form>
 
       {message && (
-        <p className="mt-4 text-center text-green-600 font-semibold">
+        <p className={`mt-4 text-center font-semibold ${message.includes("exitoso") ? "text-green-500" : "text-red-500"}`}>
           {message}
         </p>
       )}

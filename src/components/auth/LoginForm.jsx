@@ -90,7 +90,9 @@ const LoginForm = ({ onClose }) => {
         </button>
       </form>
 
-      {message && <p className="mt-4 text-center text-green-600">{message}</p>}
+      {message && <p className={`mt-4 text-center font-semibold ${message.includes("exitoso") ? "text-green-500" : "text-red-500"}`}>
+        {message}
+      </p>}
     </div>
   );
 };
