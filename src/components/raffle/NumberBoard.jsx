@@ -40,12 +40,13 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
     );
   };
 
-  const reserveNumber = async () => {
-    if (!name || dni.length !== 3)
-      return toast.error("Por favor, completa todos los campos correctamente.");
+  const buyNumbers = async () => {
+    if (!name || dni.length !== 3) {
+      return alert("Completa nombre y DNI (3 dígitos)");
+    }
 
     try {
-      const res = await fetch(`${URL}/api/numbers/reserve`, {
+      const res = await fetch(`${URL}/api/payments/create-preference`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -56,23 +57,16 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
           sellerId: selectedSeller,
         }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        setReceiptData({
-          buyerName: name,
-          buyerDni: dni,
-          selectedNumbers: selectedNumbers,
-          title: title || "Sorteo",
-          tickets: data.tickets,
-        });
-        setShowReceipt(true);
-        setSelectedNumbers([]);
-        setName("");
-        setDni("");
-        fetchNumbers();
+
+      const data = await res.json();
+
+      if (data?.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert("No se pudo generar el link de pago.");
       }
     } catch (err) {
-      console.error("Error reservando número:", err);
+      console.error("Error generando preferencia:", err);
     }
   };
 
@@ -168,20 +162,12 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
           dni={dni}
           setName={setName}
           setDni={setDni}
-          reserveNumber={reserveNumber}
+          onBuy={buyNumbers}
           sellers={seller}
           selectedSeller={selectedSeller}
           setSelectedSeller={setSelectedSeller}
         />
       )}
-      <ReservationReceiptModal
-        show={showReceipt}
-        onClose={() => setShowReceipt(false)}
-        buyerName={receiptData?.buyerName}
-        buyerDni={receiptData?.buyerDni}
-        title={receiptData?.title}
-        tickets={receiptData?.tickets}
-      />
     </div>
   );
 };
