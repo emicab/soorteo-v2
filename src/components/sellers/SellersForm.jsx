@@ -48,7 +48,7 @@ const SellersForm = ({ sellers, setSellers }) => {
                 onClick={() => eliminarVendedor(i)}
                 className="text-red-500 hover:text-red-700"
               >
-                ❌
+                {sellers.length > 0 ? "❌" : ""}
               </button>
             </li>
           ))}

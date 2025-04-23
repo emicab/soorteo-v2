@@ -1,8 +1,7 @@
 import { useState } from "react";
 import useAuthStore from "../../store/useAuthStore";
 
-const URL = import.meta.env.VITE_URL
-
+const URL = import.meta.env.VITE_URL;
 
 const EditRaffle = ({ raffle, onClose, onUpdate }) => {
   const { token } = useAuthStore();
@@ -31,7 +30,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
       if (response.ok) {
         onUpdate();
         setMessage("Sorteo actualizado.");
-        onClose();
+        setTimeout(() => onClose(), 1000);
       } else {
         setMessage(data.message || "Error al actualizar el sorteo.");
       }
@@ -42,69 +41,130 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Editar Sorteo</h2>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <input
-            type="text"
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-          />
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="number"
-            name="totalNumbers"
-            value={form.totalNumbers}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="number"
-            name="winnersCount"
-            value={parseInt(form.winnersCount)}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="number"
-            name="pricePerNumber"
-            value={form.pricePerNumber}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-          />
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
+      <div className="bg-white max-h-[90vh] overflow-y-auto w-full max-w-xl p-6 rounded-2xl shadow-2xl">
+        <h2 className="text-2xl font-bold text-gray-800 mb-5 text-center">Editar Sorteo</h2>
 
-          <div className="flex justify-between">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Título */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Título</label>
+            <input
+              type="text"
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-400"
+            />
+          </div>
+
+          {/* Descripción */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              rows={3}
+              className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-400"
+            />
+          </div>
+
+          {/* Fecha */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Fecha del sorteo</label>
+            <input
+              type="date"
+              name="date"
+              value={form.date}
+              onChange={handleChange}
+              className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+            />
+          </div>
+
+          {/* Agrupados: Total de números y ganadores */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Total Números</label>
+              <input
+                type="number"
+                name="totalNumbers"
+                value={parseInt(form.totalNumbers)}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ganadores</label>
+              <input
+                type="number"
+                name="winnersCount"
+                value={parseInt(form.winnersCount)}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+              />
+            </div>
+          </div>
+
+          {/* Agrupados: Precio por número y Alias */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Precio por Número</label>
+              <input
+                type="number"
+                name="pricePerNumber"
+                value={form.pricePerNumber}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Alias (MercadoPago)</label>
+              <input
+                type="text"
+                name="alias"
+                value={form.alias || ""}
+                onChange={handleChange}
+                placeholder="@tualias.mp"
+                className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+              />
+            </div>
+          </div>
+
+          {/* Whatsapp */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Whatsapp</label>
+            <input
+              type="text"
+              name="whatsapp"
+              value={form.whatsapp || ""}
+              onChange={handleChange}
+              placeholder="+54 9 ..."
+              className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+            />
+          </div>
+
+          {/* Botones */}
+          <div className="flex justify-end gap-3 mt-4">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded-xl hover:bg-gray-400 transition"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="px-4 py-2 bg-violet-500 text-white font-semibold rounded-xl hover:bg-violet-600 transition"
             >
               Guardar Cambios
             </button>
           </div>
         </form>
-        {message && <p className="text-center mt-3 text-green-600">{message}</p>}
+
+        {message && (
+          <p className="text-center mt-4 text-sm text-green-600 font-medium">{message}</p>
+        )}
       </div>
     </div>
   );

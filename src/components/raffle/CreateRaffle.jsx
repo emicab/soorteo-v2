@@ -8,6 +8,9 @@ import { raffleSchema, sellersSchema } from "../schema/raffleSchema.js";
 
 const CreateRaffle = ({ onClose }) => {
   const { token } = useAuthStore();
+  // manejar el modal "onClose"
+  const [isOpen, setIsOpen] = useState(false);
+
 
   const [formData, setFormData] = useState({
     title: "",
@@ -111,88 +114,129 @@ const CreateRaffle = ({ onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Crear Nuevo Sorteo</h2>
+  <form
+    onSubmit={handleSubmit}
+    className="bg-white p-6 rounded-2xl shadow-xl max-w-2xl mx-auto max-h-[90vh] overflow-y-auto space-y-4"
+  >
+    <h2 className="text-xl font-bold text-gray-800 text-center mb-4">
+      Crear Nuevo Sorteo
+    </h2>
 
-      <InputField
-        label="Título del sorteo"
-        name="title"
-        value={formData.title}
-        onChange={handleChange}
-      />
-      <InputField
-        label="Descripción"
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-      />
-      <InputField
-        label="Cantidad de números"
-        name="totalNumbers"
-        type="number"
-        value={formData.totalNumbers}
-        onChange={handleChange}
-      />
-      <InputField
-        label="Cantidad de ganadores"
-        name="winnersCount"
-        type="number"
-        value={formData.winnersCount}
-        onChange={handleChange}
-      />
-      <InputField
-        label="Precio por número"
-        name="pricePerNumber"
-        type="number"
-        value={formData.pricePerNumber}
-        onChange={handleChange}
-      />
-      <InputField
-        label="Fecha del sorteo"
-        name="date"
-        type="date"
-        value={formData.date}
-        onChange={handleChange}
-      />
+    {/* Título y Descripción */}
+    <InputField
+      label="Título del sorteo"
+      name="title"
+      value={formData.title}
+      onChange={handleChange}
+    />
+    <InputField
+      label="Descripción"
+      name="description"
+      value={formData.description}
+      onChange={handleChange}
+    />
 
-      <hr className="my-4" />
-
-      <InputField
-        label="WhatsApp del creador"
-        name="whatsapp"
-        value={formData.whatsapp}
-        onChange={handleChange}
-        placeholder="Ej: +5492901234567"
-      />
-      <InputField
-        label="Alias o método de pago"
-        name="alias"
-        value={formData.alias}
-        onChange={handleChange}
-        placeholder="Ej: alias.mp"
-      />
-
-      <hr className="my-4" />
-
-      <label className="flex items-center space-x-2 mb-2">
-        <input
-          type="checkbox"
-          checked={hasSellers}
-          onChange={(e) => setHasSellers(e.target.checked)}
+    {/* Agrupados: cantidad de números + ganadores */}
+    <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex-1">
+        <InputField
+          label="Cantidad de números"
+          name="totalNumbers"
+          type="number"
+          value={formData.totalNumbers}
+          onChange={handleChange}
         />
-        <span className="text-sm">¿Hay más de un vendedor?</span>
-      </label>
+      </div>
+      <div className="flex-1">
+        <InputField
+          label="Cantidad de ganadores"
+          name="winnersCount"
+          type="number"
+          value={formData.winnersCount}
+          onChange={handleChange}
+        />
+      </div>
+    </div>
 
-      {hasSellers && <SellersForm sellers={sellers} setSellers={setSellers} />}
+    {/* Agrupados: precio + fecha */}
+    <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex-1">
+        <InputField
+          label="Precio por número"
+          name="pricePerNumber"
+          type="number"
+          value={formData.pricePerNumber}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="flex-1">
+        <InputField
+          label="Fecha del sorteo"
+          name="date"
+          type="date"
+          value={formData.date}
+          onChange={handleChange}
+        />
+      </div>
+    </div>
 
+    <hr className="my-4" />
+
+    {/* Agrupados: WhatsApp + alias */}
+    <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex-1">
+        <InputField
+          label="WhatsApp del creador"
+          name="whatsapp"
+          value={formData.whatsapp}
+          onChange={handleChange}
+          placeholder="Ej: +5492901234567"
+        />
+      </div>
+      <div className="flex-1">
+        <InputField
+          label="Alias o método de pago"
+          name="alias"
+          value={formData.alias}
+          onChange={handleChange}
+          placeholder="Ej: alias.mp"
+        />
+      </div>
+    </div>
+
+    <hr className="my-4" />
+
+    {/* Checkbox y vendedores */}
+    <label className="flex items-center space-x-2 text-sm">
+      <input
+        type="checkbox"
+        checked={hasSellers}
+        onChange={(e) => setHasSellers(e.target.checked)}
+        className="accent-violet-500"
+      />
+      <span>¿Hay más de un vendedor?</span>
+    </label>
+
+    {hasSellers && (
+      <div className="mt-2">
+        <SellersForm sellers={sellers} setSellers={setSellers} />
+      </div>
+    )}
+
+    {/* Botón */}
+    <div className="flex justify-end">
       <button
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded mt-4"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mt-4 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={() => setIsOpen(false)}
+        disabled={!formData.title || !formData.description || !formData.totalNumbers || !formData.pricePerNumber || !formData.date || !formData.whatsapp || !formData.alias || !formData.winnersCount}
       >
         Crear Sorteo
       </button>
-    </form>
-  );
+    </div>
+  </form>
+);
+
 };
 
 export default CreateRaffle;

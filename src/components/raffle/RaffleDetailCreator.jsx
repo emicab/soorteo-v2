@@ -9,6 +9,7 @@ import SellersPanel from "../sellers/SellersPanel";
 import { Link, useParams } from "react-router-dom";
 import RaffleLoader from "../UI/RaffleLoader";
 import CheckVerified from "../UI/icons/CheckVerified";
+import UploadExcel from "../UploadExcel";
 
 const URL = import.meta.env.VITE_URL;
 
@@ -20,6 +21,8 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId }) => {
   const [loading, setLoading] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const [results, setResults] = useState([]);
+  const [file, setFile] = useState(null);
+  const [loadingExcel, setLoadingExcel] = useState(false);
 
   const fetchRaffle = async () => {
     try {
@@ -123,6 +126,30 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId }) => {
   ).length;
   const totalAvailable = raffle.tickets.length - totalSold - totalReserved;
   const totalIncome = totalSold * raffle.pricePerNumber;
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFile(file);
+    }
+  };
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", file); 
+    setLoadingExcel(true);
+
+    const res = await fetch(`${URL}/api/raffles/${raffleId}/import`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    setLoadingExcel(false);    
+    alert(data.message);
+  };
+  //handleFileChange
+
 
   if (raffle?.status === "finished") {
     return <ScreenWinners results={results} />;
@@ -274,6 +301,16 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId }) => {
           pricePerNumber={raffle.pricePerNumber}
         />
       </div>
+      {
+        loadingExcel ? (
+          <div className="w-full h-64 flex items-center justify-center">
+            <p className="font-semibold text-2xl animate-pulse text-violet-600">Bancá, estoy procesando el archivo...</p>
+          </div>
+        ) : (
+          <UploadExcel file={file} handleFileChange={handleFileChange} handleUpload={handleUpload} setLoadingExcel={setLoadingExcel} />
+        )
+      }
+
       <div className="fixed bottom-0 left-0 w-full p-4 shadow-md z-50">
         <DrawButton raffleId={raffleId} onDrawSuccess={fetchRaffle} />
       </div>
