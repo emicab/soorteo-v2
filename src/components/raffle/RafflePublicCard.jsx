@@ -9,15 +9,15 @@ const RafflePublicCard = ({ raffle }) => {
   };
 
   return (
-    <div className={`border ${raffle.owner.verified ? "border-blue-500" : "border-gray-300"} p-4 rounded-2xl bg-white hover:shadow-md transition-shadow duration-300`}>
+    <div className={`border ${raffle.owner.verified ? "border-blue-500" : "border-gray-300"} p-4 rounded-2xl bg-white hover:shadow-md transition-shadow duration-300 `}>
       <h2 className="text-lg font-semibold text-gray-800 mb-2">{raffle.title}</h2>
   
       <div className="text-sm text-gray-600 space-y-1 mb-4">
-        <p className="flex items-center gap-1">
-          <span className="font-medium text-gray-700">👤 Organizador:</span>{" "}
-          {raffle.owner.username}
+        <div className="flex items-center gap-1">
+          <span className="font-medium text-gray-700">👤</span>
+          <p>{raffle.owner.username}</p>
           {raffle.owner.verified && ( <CheckVerified verified={raffle.owner.verified} /> )}
-        </p>
+        </div>
         <p>
           <span className="font-medium text-gray-700">📅 Fecha del sorteo:</span>{" "}
           {new Date(raffle.date).toLocaleDateString("es-AR", {

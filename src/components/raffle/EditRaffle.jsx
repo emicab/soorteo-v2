@@ -40,6 +40,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
     }
   };
 
+  console.log(form)
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
       <div className="bg-white max-h-[90vh] overflow-y-auto w-full max-w-xl p-6 rounded-2xl shadow-2xl">
@@ -83,7 +84,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
           </div>
 
           {/* Agrupados: Total de números y ganadores */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex sm:flex-row gap-4">
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">Total Números</label>
               <input
@@ -125,7 +126,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
                 name="alias"
                 value={form.alias || ""}
                 onChange={handleChange}
-                placeholder="@tualias.mp"
+                placeholder="tualias.mp"
                 className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
               />
             </div>
@@ -143,6 +144,14 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
               className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
             />
           </div>
+
+          <label className="flex flex-col mt-4">
+            <span className="font-medium text-sm text-gray-700" >Privacidad:</span>
+            <select name="privacity" className="text-md rounded-xl px-2 py-2 mt-2 border border-gray-300" onChange={handleChange} value={form.privacity}>
+              <option value="private">Privado</option>
+              <option value="public">Público</option>
+            </select>
+          </label>
 
           {/* Botones */}
           <div className="flex justify-end gap-3 mt-4">

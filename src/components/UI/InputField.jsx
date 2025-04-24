@@ -1,7 +1,7 @@
 // components/InputField.jsx
 const InputField = ({ label, name, value, onChange, type = "text", placeholder = "" }) => {
     return (
-      <div className="mb-4">
+      <div className="mb-1">
         <label className="block text-sm font-medium mb-1" htmlFor={name}>
           {label}
         </label>

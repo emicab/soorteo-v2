@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { delayRedirect } from "../../utils/utils";
+import { set } from "zod";
 
 const SearchRaffle = () => {
   const [shortCode, setShortCode] = useState("");
@@ -30,11 +31,16 @@ const SearchRaffle = () => {
       delayRedirect(navigate, `/${shortCode}`)
     } catch (err) {
       setError("No se encontró ningún sorteo con ese código.");
+      console.error(err);
+      setTimeout(() => {
+        setError("");
+      }
+      , 3000);
     }
   };
 
   return (
-    <div className="mt-8 p-4 bg-white rounded shadow max-w-md mx-auto">
+    <div className="mt-8 p-4 bg-white rounded shadow-md max-w-lg mx-auto">
       <h2 className="text-lg font-semibold mb-2 text-center">
         Buscar sorteo por código
       </h2>

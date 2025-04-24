@@ -65,7 +65,7 @@ const QuickRaffle = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 px-4 py-4 bg-white shadow-md rounded">
+    <div className="max-w-lg mx-auto mt-5 px-4 py-4 bg-white shadow-md rounded">
       {!showResult ? (
         <>
           <h2 className="text-xl font-bold text-center mb-4">🎲 Sorteo Rápido</h2>
@@ -73,7 +73,7 @@ const QuickRaffle = () => {
           <textarea
             className="w-full p-2 border rounded mb-3"
             rows="5"
-            placeholder="Ingresa los participantes, uno por línea..."
+            placeholder={`Ingresa los participantes, uno por línea...\n Participante 1\n Participante 2\n Participante 3`}
             value={participants}
             onChange={(e) => setParticipants(e.target.value)}
             disabled={isSorting}
