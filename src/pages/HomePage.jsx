@@ -2,6 +2,7 @@ import QuickRaffle from "../components/raffle/QuickRaffle";
 import SearchRaffle from "../components/raffle/SearchRaffle";
 import SearchHistory from "../components/raffle/SearchHistory";
 import { Helmet } from "react-helmet";
+import RafflesPublic from "../components/raffle/RafflesPublic";
 
 const HomePage = () => {
   return (
@@ -14,13 +15,18 @@ const HomePage = () => {
         <meta property="og:url" content="https://rifalo.com.ar" />
       </Helmet>
 
-      <div className="container mx-auto px-4 py-6">
+      <div className=" px-4 py-6">
         <h1 className="text-3xl font-bold text-center">¡Bienvenidos a Rifalo!</h1>
-        <QuickRaffle />
-        <div className="my-2">
-          <SearchRaffle />
+        <div className="flex flex-col">
+          <div>
+            <QuickRaffle />
+            <div className="my-2">
+              <SearchRaffle />
+              <SearchHistory />
+            </div>
+          </div>
+          <RafflesPublic />
         </div>
-        <SearchHistory />
       </div>
     </>
   );

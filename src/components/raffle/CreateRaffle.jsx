@@ -8,9 +8,6 @@ import { raffleSchema, sellersSchema } from "../schema/raffleSchema.js";
 
 const CreateRaffle = ({ onClose }) => {
   const { token } = useAuthStore();
-  // manejar el modal "onClose"
-  const [isOpen, setIsOpen] = useState(false);
-
 
   const [formData, setFormData] = useState({
     title: "",
@@ -29,9 +26,10 @@ const CreateRaffle = ({ onClose }) => {
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
 
     try {
       const validatedFormData = raffleSchema.parse(formData);
@@ -228,7 +226,6 @@ const CreateRaffle = ({ onClose }) => {
       <button
         type="submit"
         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mt-4 transition disabled:opacity-50 disabled:cursor-not-allowed"
-        onClick={() => setIsOpen(false)}
         disabled={!formData.title || !formData.description || !formData.totalNumbers || !formData.pricePerNumber || !formData.date || !formData.whatsapp || !formData.alias || !formData.winnersCount}
       >
         Crear Sorteo
