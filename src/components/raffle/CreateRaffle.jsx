@@ -99,7 +99,7 @@ const CreateRaffle = ({ onClose }) => {
         setSellers([""]);
         onClose();
       } else {
-        console.error("Error al crear sorteo:", data);
+        toast.error(`${data.message || "Error desconocido"}`);
       }
     } catch (err) {
       if (err instanceof z.ZodError) {

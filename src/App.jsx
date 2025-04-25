@@ -31,7 +31,7 @@ const App = () => {
 
     <Router>
       <ToastContainer
-        className={`px-4 pt-5 font-semibold text-gray-950`}
+        className={`px-4 pt-5 text-gray-950`}
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
