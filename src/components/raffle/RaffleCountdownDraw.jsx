@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const RaffleCountdownDraw = ({ raffleId, onDrawCompleted, onClose }) => {
   const [seconds, setSeconds] = useState(5);
@@ -30,14 +31,14 @@ const RaffleCountdownDraw = ({ raffleId, onDrawCompleted, onClose }) => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.error || "Error al realizar el sorteo.");
+        toast.error(data.error || "Error al realizar el sorteo.");
         onClose();
       } else {
         setWinners(data.winners);
         if (onDrawCompleted) onDrawCompleted(data.winners);
       }
     } catch (err) {
-      alert("Error al conectar con el servidor.");
+      toast.error("Error al conectar con el servidor.");
       onClose();
     } finally {
       setLoading(false);

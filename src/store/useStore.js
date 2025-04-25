@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { create } from "zustand";
 
 const useStore = create((set) => ({
@@ -41,17 +42,17 @@ const useStore = create((set) => ({
   sortear: () => {
     set((state) => {
       if (state.numberSelect.length === 0) {
-        alert("No hay números seleccionados para el sorteo.");
+        toast.warn("No hay números seleccionados para el sorteo.");
         return state;
       }
 
       if (state.cantidadSorteo > state.numberSelect.length) {
-        alert("La cantidad de números a sortear no puede ser mayor que los seleccionados.");
+        toast.warn("La cantidad de números a sortear no puede ser mayor que los seleccionados.");
         return state;
       }
       
       if (state.premios.length == 0) {
-        alert("No hay premios ingresados.");
+        toast.warn("No hay premios ingresados.");
         return state;
       }
       /* if (state.premios.length < state.cantidadSorteo) {

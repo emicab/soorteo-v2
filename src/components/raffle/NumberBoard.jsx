@@ -3,6 +3,7 @@ import useAuthStore from "../../store/useAuthStore";
 import NumberItem from "./NumberItem";
 import ReserveForm from "./ReserveForm";
 import ReservationReceiptModal from "../ReservationReceiptModal";
+import { toast } from "react-toastify";
 
 const NumberBoard = ({ raffleId, isCreator, title }) => {
   const { token } = useAuthStore();
@@ -41,7 +42,7 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
 
   const reserveNumber = async () => {
     if (!name || dni.length !== 3)
-      return alert("Completa nombre y DNI (3 dígitos)");
+      return toast.error("Por favor, completa todos los campos correctamente.");
 
     try {
       const res = await fetch(`${URL}/api/numbers/reserve`, {

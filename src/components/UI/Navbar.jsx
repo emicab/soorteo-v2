@@ -29,12 +29,12 @@ const Navbar = () => {
             >
               Iniciar Sesión
             </button>
-            <button
+            {/* <button
               onClick={() => openModal("register")}
-              className="text-text font-semibold cursor-pointer mx-2 hover:text-tertiary transition-all"
+              className="text-text font-semibold cursor-pointer hidden mx-2 hover:text-tertiary transition-all"
             >
               Registrarse
-            </button>
+            </button> */}
           </>
         ) : (
           <div className="flex items-center">

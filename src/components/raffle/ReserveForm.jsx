@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ReserveForm = ({
   selectedNumbers,
@@ -17,11 +18,11 @@ const ReserveForm = ({
 
   const handleSubmit = () => {
     if (!acceptedTerms) {
-      alert("Debes aceptar los términos y condiciones para continuar.");
+      toast.error("Debes aceptar los términos y condiciones para continuar.");
       return;
     }
     if (sellers.length > 1 && !selectedSeller) {
-      alert("Debes seleccionar un vendedor.");
+      toast.warn("Debes seleccionar un vendedor.");
       return;
     }
 

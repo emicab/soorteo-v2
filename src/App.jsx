@@ -14,6 +14,7 @@ import PublicRaffleView from "./pages/PublicRaffleView";
 import HomePage from "./pages/HomePage";
 import RaffleDetailCreator from "./components/raffle/RaffleDetailCreator";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import { Bounce, ToastContainer } from "react-toastify";
 
 const PrivateRoute = ({ element }) => {
   const { user } = useAuthStore();
@@ -29,6 +30,20 @@ const App = () => {
   return (
 
     <Router>
+      <ToastContainer
+        className={`px-4 pt-5 font-semibold text-gray-950`}
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <Navbar />
       <Routes>
         {/* Rutas públicas */}

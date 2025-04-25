@@ -6,6 +6,7 @@ import RaffleLoader from "../components/UI/RaffleLoader";
 import RaffleNotFound from "../components/UI/RaffleNotFound";
 import CheckVerified from "../components/UI/icons/CheckVerified";
 import { Helmet } from "react-helmet";
+import { toast } from "react-toastify";
 
 const PublicRaffleView = () => {
   const { id, shortcode } = useParams();
@@ -107,8 +108,7 @@ Código de reserva: *${referenceCode}*`;
     // localStorage.clear("latestReservation")
     return whatsappURL
   };
-
-
+  const privacity = raffle.privacity === "public" ? "Público" : "Privado";
 
   return (
     <>
@@ -122,9 +122,12 @@ Código de reserva: *${referenceCode}*`;
 
       <div className="max-w-4xl mx-auto p-4 bg-white rounded-lg shadow-sm">
         <div className="flex mb-4 items-center justify-between">
-          <h2 className="text-3xl font-bold text-gray-800  uppercase">
-            {raffle.title}
-          </h2>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+            <h2 className="text-lg sm:text-3xl font-bold text-gray-800 uppercase ">
+              {raffle.title}
+            </h2>
+            <p className={`rounded-full text-sm font-semibold px-2 ${raffle.privacity == "public" ? 'bg-blue-600 text-blue-100' : 'bg-red-600 text-red-100'}`}>{privacity}</p>
+          </div>
           <div>
             <span
               className={`text-sm font-semibold px-3 py-1 rounded-full 
@@ -216,7 +219,7 @@ Código de reserva: *${referenceCode}*`;
           <button
             onClick={() => {
               navigator.clipboard.writeText(raffle.shortCode);
-              alert("Código copiado al portapapeles");
+              toast.success("Código copiado!");
             }}
             className="ml-auto px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
           >

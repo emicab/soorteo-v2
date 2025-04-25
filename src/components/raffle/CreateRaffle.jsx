@@ -5,6 +5,7 @@ import SellersForm from "../sellers/SellersForm";
 
 import z from "zod";
 import { raffleSchema, sellersSchema } from "../schema/raffleSchema.js";
+import { toast } from "react-toastify";
 
 const CreateRaffle = ({ onClose }) => {
   const { token } = useAuthStore();
@@ -53,9 +54,10 @@ const CreateRaffle = ({ onClose }) => {
             );
 
             if (duplicates.length > 0) {
-              alert(
+              toast(
                 "Hay nombres de vendedores duplicados: " + duplicates.join(", ")
               );
+              
               return;
             }
 
@@ -72,7 +74,7 @@ const CreateRaffle = ({ onClose }) => {
             });
           } catch (err) {
             if (err instanceof z.ZodError) {
-              alert(
+              toast.error(
                 "Errores en los vendedores:\n" +
                 err.errors.map((e) => e.message).join("\n")
               );
@@ -101,7 +103,7 @@ const CreateRaffle = ({ onClose }) => {
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
-        alert(
+        toast(
           "Errores en el formulario:\n" +
           err.errors.map((e) => `${e.path[0]}: ${e.message}`).join("\n")
         );

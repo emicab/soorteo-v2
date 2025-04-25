@@ -10,6 +10,7 @@ import { Link, useParams } from "react-router-dom";
 import RaffleLoader from "../UI/RaffleLoader";
 import CheckVerified from "../UI/icons/CheckVerified";
 import UploadExcel from "../UploadExcel";
+import { toast } from "react-toastify";
 
 const URL = import.meta.env.VITE_URL;
 
@@ -146,7 +147,7 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId }) => {
 
     const data = await res.json();
     setLoadingExcel(false);
-    alert(data.message);
+    toast(data.message);
   };
 
   const privacity = raffle.privacity === "public" ? "Público" : "Privado";
@@ -239,7 +240,7 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId }) => {
             <button
               onClick={() => {
                 navigator.clipboard.writeText(raffle.shortCode);
-                alert("Código copiado al portapapeles");
+                toast.success("Código copiado al portapapeles");
               }}
               className="ml-auto px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
             >

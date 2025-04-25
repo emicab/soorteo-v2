@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const QuickRaffle = () => {
   const [participants, setParticipants] = useState("");
@@ -14,7 +15,7 @@ const QuickRaffle = () => {
   const handleRaffle = async () => {
     const participantsArray = participants.split("\n").filter((p) => p.trim());
     if (participantsArray.length < winnersCount) {
-      alert("Los ganadores no pueden ser más que los participantes.");
+      toast.warn("Los ganadores no pueden ser más que los participantes.");
       return;
     }
 

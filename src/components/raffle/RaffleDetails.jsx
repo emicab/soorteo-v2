@@ -147,11 +147,9 @@ const RaffleDetail = () => {
         })}
       </div>
 
-      {/* Botón de iniciar sorteo (funcionalidad futura) */}
       <div className="text-center mt-6">
         <button
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded"
-          onClick={() => alert("Funcionalidad para iniciar sorteo próximamente")}
         >
           Iniciar Sorteo
         </button>
