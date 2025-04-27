@@ -36,7 +36,7 @@ const Dashboard = () => {
         setRaffles(data);
         setShowCreateModal(false);
         setLoading(false);
-        
+
       } else {
         console.error("Error en respuesta:", data);
       }
@@ -121,49 +121,50 @@ const Dashboard = () => {
                 </span>
               </div>
 
-                  <h4 className="text-md text-gray-700 mb-1 font-medium">
-                    Alias: <span className="font-normal">{raffle.alias}</span>
-                  </h4>
+              <h4 className="text-md text-gray-700 mb-1 font-medium">
+                Alias: <span className="font-normal">{raffle.alias}</span>
+              </h4>
 
-                  <p className="text-sm text-gray-600">
-                    Precio por número: <strong>${raffle.pricePerNumber}</strong>
-                  </p>
+              <p className="text-sm text-gray-600">
+                Precio por número: <strong>${raffle.pricePerNumber}</strong>
+              </p>
 
-                  <p className="text-xs text-gray-500 my-2">
-                    📅 Creado: {new Date(raffle.createdAt).toLocaleString()}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    🎯 Fecha del sorteo:{" "}
-                    {new Date(raffle.date).toLocaleDateString("es-AR")}
-                  </p>
+              <p className="text-xs text-gray-500 my-2">
+                📅 Creado: {new Date(raffle.createdAt).toLocaleString()}
+              </p>
+              <p className="text-xs text-gray-500">
+                🎯 Fecha del sorteo:{" "}
+                {new Date(raffle.date).toLocaleDateString("es-AR")}
+              </p>
 
-                  {userId === raffle.ownerId && (
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      <button
-                        onClick={() => setShowEditModal(raffle)}
-                        className="bg-yellow-400 text-white text-sm px-3 py-1.5 rounded-md hover:bg-yellow-500"
-                      >
-                        ✏️ Editar
-                      </button>
-                      <button
-                        onClick={() => handleDelete(raffle.id)}
-                        className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-md hover:bg-red-600"
-                      >
-                        🗑 Eliminar
-                      </button>
-                      <button
-                        onClick={() => navigate(`/${raffle.shortCode}/creator`)}
-                        className="bg-indigo-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-indigo-700"
-                      >
-                        👁 Ver detalle
-                      </button>
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          )
-        }
+              {userId === raffle.ownerId && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setShowEditModal(raffle)}
+                    className="bg-yellow-400 text-white text-sm px-3 py-1.5 rounded-md hover:bg-yellow-500"
+                  >
+                    ✏️ Editar
+                  </button>
+                  <button
+                    onClick={() => handleDelete(raffle.id)}
+                    className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-md hover:bg-red-600"
+                  >
+                    🗑 Eliminar
+                  </button>
+                  <button
+                    onClick={() => navigate(`/${raffle.shortCode}/creator`)}
+                    className="bg-indigo-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-indigo-700"
+                  >
+                    👁 Ver detalle
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+
+
 
         {showCreateModal && (
           <CreateRaffle
