@@ -20,10 +20,6 @@ const HomePage = () => {
         <div className="flex flex-col">
           <div>
             <QuickRaffle />
-            <div className="my-2">
-              <SearchRaffle />
-              <SearchHistory />
-            </div>
           </div>
           <RafflesPublic />
         </div>

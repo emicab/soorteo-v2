@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { delayRedirect } from "../../utils/utils";
-import { set } from "zod";
+import SearchIcon from "../UI/icons/SearchIcon";
+import SearchHistory from "../raffle/SearchHistory";
+import { toast } from "react-toastify";
 
-const SearchRaffle = () => {
+const SearchRaffle = ({ setSearchModalOpen }) => {
   const [shortCode, setShortCode] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -19,7 +21,6 @@ const SearchRaffle = () => {
 
       const raffle = await res.json();
 
-      // Guardar en historial local (opcional)
       const history = JSON.parse(localStorage.getItem("raffleHistory") || "[]");
       const updated = [
         raffle,
@@ -28,40 +29,35 @@ const SearchRaffle = () => {
       ].slice(0, 5);
       localStorage.setItem("raffleHistory", JSON.stringify(updated));
 
-      delayRedirect(navigate, `/${shortCode}`)
+      delayRedirect(navigate, `/${shortCode}`);
+      setSearchModalOpen(false);
     } catch (err) {
       setError("No se encontró ningún sorteo con ese código.");
       console.error(err);
-      setTimeout(() => {
-        setError("");
-      }
-      , 3000);
+      toast.error("No se encontró ningún sorteo con ese código.");
+      setTimeout(() => setError(""), 3000);
     }
   };
 
   return (
-    <div className="mt-8 p-4 bg-white rounded shadow-md max-w-lg mx-auto">
-      <h2 className="text-lg font-semibold mb-2 text-center">
-        Buscar sorteo por código
-      </h2>
-      <div className="flex gap-2">
+    <div className="w-full">
+      <div className="flex justify-center">
         <input
           type="text"
           value={shortCode}
           onChange={(e) => setShortCode(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          placeholder="Ej: ABC123"
-          className="flex-1 border border-gray-300 px-3 py-2 rounded"
+          placeholder="ABC123"
+          className={`bg-white border-gray-300 px-3 py-2 rounded-tl-lg rounded-bl-lg border focus:outline-blue-500 w-full md:max-w-3xs ${error ? "border-red-500" : "border-gray-300"}`}
         />
-
         <button
-          onClick={handleSearch}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          onClick={() => handleSearch}
+          className="bg-blue-600 text-white px-4 hover:bg-blue-700 rounded-tr-lg rounded-br-lg"
         >
-          Buscar
+          <SearchIcon />
         </button>
       </div>
-      {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
+      {/* <SearchHistory /> */}
     </div>
   );
 };

@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(null);
   const [raffles, setRaffles] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const userId = getUserId();
@@ -28,9 +29,12 @@ const Dashboard = () => {
       });
 
       const data = await response.json();
+      setLoading(true);
       if (response.ok) {
         setRaffles(data);
         setShowCreateModal(false);
+        setLoading(false);
+        
       } else {
         console.error("Error en respuesta:", data);
       }
@@ -91,69 +95,76 @@ const Dashboard = () => {
           </motion.button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {raffles.map((raffle, index) => (
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2, delay: index * 0.1, ease: "easeIn" }}
-              key={raffle.id}
-              className="bg-white border border-gray-200 shadow-md rounded-xl p-5 transition hover:shadow-lg"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-bold text-gray-800 uppercase">
-                  {raffle.title}
-                </h3>
-                <span
-                  className={`text-sm font-semibold px-3 py-1 rounded-full ${
-                    statusMap[raffle.status].color
-                  } text-white`}
+        {
+          loading ? (
+            <div className="flex mt-10 justify-center items-center">
+              <p className="text-gray-500 text-lg">Cargando sorteos...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {raffles.map((raffle, index) => (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: index * 0.1, ease: "easeIn" }}
+                  key={raffle.id}
+                  className="bg-white border border-gray-200 shadow-md rounded-xl p-5 transition hover:shadow-lg"
                 >
-                  {statusMap[raffle.status].label}
-                </span>
-              </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-xl font-bold text-gray-800 uppercase">
+                      {raffle.title}
+                    </h3>
+                    <span
+                      className={`text-sm font-semibold px-3 py-1 rounded-full ${statusMap[raffle.status].color
+                        } text-gray-900`}
+                    >
+                      {statusMap[raffle.status].label}
+                    </span>
+                  </div>
 
-              <h4 className="text-md text-gray-700 mb-1 font-medium">
-                Alias: <span className="font-normal">{raffle.alias}</span>
-              </h4>
+                  <h4 className="text-md text-gray-700 mb-1 font-medium">
+                    Alias: <span className="font-normal">{raffle.alias}</span>
+                  </h4>
 
-              <p className="text-sm text-gray-600">
-                Precio por número: <strong>${raffle.pricePerNumber}</strong>
-              </p>
+                  <p className="text-sm text-gray-600">
+                    Precio por número: <strong>${raffle.pricePerNumber}</strong>
+                  </p>
 
-              <p className="text-xs text-gray-500 my-2">
-                📅 Creado: {new Date(raffle.createdAt).toLocaleString()}
-              </p>
-              <p className="text-xs text-gray-500">
-                🎯 Fecha del sorteo:{" "}
-                {new Date(raffle.date).toLocaleDateString("es-AR")}
-              </p>
+                  <p className="text-xs text-gray-500 my-2">
+                    📅 Creado: {new Date(raffle.createdAt).toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    🎯 Fecha del sorteo:{" "}
+                    {new Date(raffle.date).toLocaleDateString("es-AR")}
+                  </p>
 
-              {userId === raffle.ownerId && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setShowEditModal(raffle)}
-                    className="bg-yellow-400 text-white text-sm px-3 py-1.5 rounded-md hover:bg-yellow-500"
-                  >
-                    ✏️ Editar
-                  </button>
-                  <button
-                    onClick={() => handleDelete(raffle.id)}
-                    className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-md hover:bg-red-600"
-                  >
-                    🗑 Eliminar
-                  </button>
-                  <button
-                    onClick={() => navigate(`/${raffle.shortCode}/creator`)}
-                    className="bg-indigo-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-indigo-700"
-                  >
-                    👁 Ver detalle
-                  </button>
-                </div>
-              )}
-            </motion.div>
-          ))}
-        </div>
+                  {userId === raffle.ownerId && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <button
+                        onClick={() => setShowEditModal(raffle)}
+                        className="bg-yellow-400 text-white text-sm px-3 py-1.5 rounded-md hover:bg-yellow-500"
+                      >
+                        ✏️ Editar
+                      </button>
+                      <button
+                        onClick={() => handleDelete(raffle.id)}
+                        className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-md hover:bg-red-600"
+                      >
+                        🗑 Eliminar
+                      </button>
+                      <button
+                        onClick={() => navigate(`/${raffle.shortCode}/creator`)}
+                        className="bg-indigo-600 text-white text-sm px-3 py-1.5 rounded-md hover:bg-indigo-700"
+                      >
+                        👁 Ver detalle
+                      </button>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          )
+        }
 
         {showCreateModal && (
           <CreateRaffle
