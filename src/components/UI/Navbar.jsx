@@ -60,10 +60,10 @@ const Navbar = () => {
             >
               Mis Sorteos
             </Link>
-            <div className="flex items-center border-l border-gray-400 pl-2 relative group/item">
+            {/* <div className="flex items-center border-l border-gray-400 pl-2 relative group/item">
               <p className="font-bold text-blue-200 text-center bg-blue-600 rounded-full w-8 h-8 leading-7.5 px-2 group-hover/user:">{username.slice(0, 1)}</p>
               <p className="bg-white ml-2 text-sm md:text-base font-semibold absolute top-10 text-center -right-2 ">¡Hola, {username}!</p>
-            </div>
+            </div> */}
             <button
               onClick={logout}
               className="flex items-center justify-center hover:bg-gray-300 rounded-full transition"
