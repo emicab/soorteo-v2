@@ -240,7 +240,7 @@ const CreateRaffle = ({ onClose }) => {
       <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl mt-4 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="bg-violet-600 hover:bg-violet-700 text-white px-4 py-2 rounded-md mt-4 transition disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={!formData.title || !formData.description || !formData.totalNumbers || !formData.pricePerNumber || !formData.date || !formData.whatsapp || !formData.alias || !formData.winnersCount}
         >
           Crear Sorteo

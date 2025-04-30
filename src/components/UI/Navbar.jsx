@@ -22,7 +22,7 @@ const Navbar = () => {
   const username = user?.username || "Usuario";
 
   return (
-    <nav className="bg-gradient-to-r from-gray-100 to-slate-200 p-4 flex items-center justify-between shadow-md">
+    <nav className="bg-gradient-to-r from-gray-100 to-slate-200 p-4 mb-4 flex items-center justify-between shadow-md">
       {/* Logo */}
       <Link to="/" className="flex items-center">
         <img src="/Logo_Negro.svg" alt="Logo" className="w-28 md:w-36" />
@@ -50,8 +50,13 @@ const Navbar = () => {
             >
               Iniciar Sesión
             </button>
+            <button
+              onClick={() => openModal("register")}
+              className="text-text text-sm md:text-base font-semibold hover:text-tertiary transition"
+            >
+              Registrarse
+            </button>
           </>
-          // agregar boton registro
         ) : (
           <>
             <Link
@@ -61,7 +66,7 @@ const Navbar = () => {
               Mis Sorteos
             </Link>
             {/* <div className="flex items-center border-l border-gray-400 pl-2 relative group/item">
-              <p className="font-bold text-blue-200 text-center bg-blue-600 rounded-full w-8 h-8 leading-7.5 px-2 group-hover/user:">{username.slice(0, 1)}</p>
+              <p className="font-bold text-blue-200 text-center bg-violet-600 rounded-full w-8 h-8 leading-7.5 px-2 group-hover/user:">{username.slice(0, 1)}</p>
               <p className="bg-white ml-2 text-sm md:text-base font-semibold absolute top-10 text-center -right-2 ">¡Hola, {username}!</p>
             </div> */}
             <button

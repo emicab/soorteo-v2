@@ -84,7 +84,7 @@ const LoginForm = ({ onClose }) => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold p-3 rounded transition"
+          className="w-full bg-violet-500 hover:bg-violet-600 text-white font-semibold p-3 rounded transition"
         >
           Ingresar
         </button>

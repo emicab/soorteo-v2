@@ -10,7 +10,7 @@ const RafflePublicCard = ({ raffle }) => {
 
   return (
     <div className={`border ${raffle.owner.verified ? "border-blue-500" : "border-gray-300"} p-4 rounded-2xl bg-white hover:shadow-md transition-shadow duration-300 `}>
-      <h2 className="text-lg font-semibold text-gray-800 mb-2">{raffle.title}</h2>
+      <h2 className="text-lg font-semibold text-gray-800 mb-2 uppercase">{raffle.title}</h2>
   
       <div className="text-sm text-gray-600 space-y-1 mb-4">
         <div className="flex items-center gap-1">
@@ -37,9 +37,9 @@ const RafflePublicCard = ({ raffle }) => {
   
       <button
         onClick={handleEnterRaffle}
-        className="w-full py-2 rounded-xl cursor-pointer text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 transition"
+        className="w-full py-2 rounded-md cursor-pointer text-sm font-medium bg-violet-600 text-white hover:bg-violet-700 transition"
       >
-        Ver Sorteo
+        {raffle.status === "pending" ? "Participar" : "Ver Resultados"}
       </button>
     </div>
   );

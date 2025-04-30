@@ -89,7 +89,7 @@ const Dashboard = () => {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
             onClick={() => setShowCreateModal(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+            className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-violet-600 transition"
           >
             Crear Sorteo
           </motion.button>
@@ -108,7 +108,7 @@ const Dashboard = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.2, delay: index * 0.1, ease: "easeIn" }}
                   key={raffle.id}
-                  className="bg-white border border-gray-200 shadow-md rounded-xl p-5 transition hover:shadow-lg"
+                  className="bg-white border border-gray-200 shadow-md rounded-md p-5 transition hover:shadow-lg"
                 >
                   <div className="flex justify-between items-center mb-2">
                     <h3 className="text-xl font-bold text-gray-800 uppercase">

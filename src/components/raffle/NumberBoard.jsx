@@ -146,8 +146,8 @@ const NumberBoard = ({ raffleId, isCreator, title }) => {
         })}
       </div>
 
-      <div className="h-64 py-2 overflow-hidden rounded-lg shadow-lg overflow-y-auto">
-        <ul className="grid grid-cols-4 justify-items-center grid-row-5 md:grid-cols-8 md:px-2 gap-2">
+      <div className="py-2 mt-2 overflow-hidden rounded-lg min-h-44 max-h-64 shadow-lg overflow-y-auto">
+        <ul className="grid grid-cols-4 justify-items-center grid-row-5 md:grid-cols-10 md:px-2 gap-2">
           {filteredNumbers.map((n) => (
             <NumberItem
               key={n.id}

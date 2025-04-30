@@ -29,7 +29,7 @@ const SellersForm = ({ sellers, setSellers }) => {
         <button
           type="button"
           onClick={agregarVendedor}
-          className="bg-blue-500 text-white px-3 py-1 rounded"
+          className="bg-violet-500 text-white px-3 py-1 rounded"
         >
           +
         </button>

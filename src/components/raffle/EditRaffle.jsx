@@ -55,7 +55,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
               name="title"
               value={form.title}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-400"
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
           </div>
 
@@ -67,7 +67,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
               value={form.description}
               onChange={handleChange}
               rows={3}
-              className="w-full p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-400"
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-400"
             />
           </div>
 
@@ -79,7 +79,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
               name="date"
               value={form.date}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-violet-400"
             />
           </div>
 
@@ -92,7 +92,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
                 name="totalNumbers"
                 value={parseInt(form.totalNumbers)}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-violet-400"
               />
             </div>
             <div className="flex-1">
@@ -102,7 +102,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
                 name="winnersCount"
                 value={parseInt(form.winnersCount)}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-violet-400"
               />
             </div>
           </div>
@@ -116,7 +116,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
                 name="pricePerNumber"
                 value={form.pricePerNumber}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-violet-400"
               />
             </div>
             <div className="flex-1">
@@ -127,7 +127,7 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
                 value={form.alias || ""}
                 onChange={handleChange}
                 placeholder="tualias.mp"
-                className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-violet-400"
               />
             </div>
           </div>
@@ -141,13 +141,13 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
               value={form.whatsapp || ""}
               onChange={handleChange}
               placeholder="+54 9 ..."
-              className="w-full p-2 border border-gray-300 rounded-xl focus:ring-violet-400"
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-violet-400"
             />
           </div>
 
           <label className="flex flex-col mt-4">
             <span className="font-medium text-sm text-gray-700" >Privacidad:</span>
-            <select name="privacity" className="text-md rounded-xl px-2 py-2 mt-2 border border-gray-300" onChange={handleChange} value={form.privacity}>
+            <select name="privacity" className="text-md rounded-md px-2 py-2 mt-2 border border-gray-300" onChange={handleChange} value={form.privacity}>
               <option value="private">Privado</option>
               <option value="public">Público</option>
             </select>
@@ -158,13 +158,13 @@ const EditRaffle = ({ raffle, onClose, onUpdate }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-gray-800 rounded-xl hover:bg-gray-400 transition"
+              className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-violet-500 text-white font-semibold rounded-xl hover:bg-violet-600 transition"
+              className="px-4 py-2 bg-violet-500 text-white font-semibold rounded-md hover:bg-violet-600 transition"
             >
               Guardar Cambios
             </button>

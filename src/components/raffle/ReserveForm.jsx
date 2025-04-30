@@ -109,7 +109,7 @@ const ReserveForm = ({
           ${
             (!acceptedTerms || name.length < 3 || dni.length !== 3)
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
+              : "bg-violet-600 hover:bg-violet-700"
           }`}
       >
         Reservar números

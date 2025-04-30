@@ -16,7 +16,7 @@ const LotterySection = () => {
           className="ml-2 border p-1 rounded w-16 text-center"
         />
       </label>
-      <button onClick={sortear} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      <button onClick={sortear} className="bg-violet-500 text-white px-4 py-2 rounded hover:bg-violet-600">
         Sortear
       </button>
       {contador > 0 && <p className="text-xl font-bold text-red-600">Sorteando en {contador}...</p>}

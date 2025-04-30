@@ -12,7 +12,7 @@ const RaffleNotFound = () => {
       </p>
       <button
         onClick={() => navigate("/")}
-        className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-blue-700 transition-all"
+        className="px-6 py-2 bg-violet-600 text-white font-semibold rounded-md shadow hover:bg-violet-700 transition-all"
       >
         Volver al inicio
       </button>

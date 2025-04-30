@@ -72,7 +72,7 @@ const QuickRaffle = () => {
           <h2 className="text-xl font-bold text-center mb-4">🎲 Sorteo Rápido</h2>
 
           <textarea
-            className="w-full p-2 border rounded mb-3"
+            className="w-full p-2 border rounded-md mb-3"
             rows="5"
             placeholder={`Ingresa los participantes, uno por línea...\n Participante 1\n Participante 2\n Participante 3`}
             value={participants}
@@ -80,18 +80,21 @@ const QuickRaffle = () => {
             disabled={isSorting}
           />
 
+          <label>
+            <span className="text-base font-medium text-gray-500">Numero de ganadores</span>
           <input
             type="number"
             min="1"
             max={participants.split("\n").length}
-            className="w-full p-2 border rounded mb-3"
+            className="w-full p-2 border rounded-md mb-3"
             value={winnersCount}
             onChange={(e) => setWinnersCount(parseInt(e.target.value))}
             disabled={isSorting}
           />
+          </label>
 
           <button
-            className="w-full bg-blue-500 text-white p-2 rounded"
+            className="w-full bg-violet-500 hover:bg-violet-600 transition-all text-white p-2 rounded-md"
             onClick={handleRaffle}
             disabled={isSorting}
           >

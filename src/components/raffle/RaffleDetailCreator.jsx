@@ -242,7 +242,7 @@ const RaffleDetailCreator = ({ raffleId: propRaffleId }) => {
                 navigator.clipboard.writeText(raffle.shortCode);
                 toast.success("Código copiado al portapapeles");
               }}
-              className="ml-auto px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              className="ml-auto px-3 py-1.5 text-sm bg-violet-600 text-white rounded hover:bg-violet-700 transition"
             >
               Copiar
             </button>

@@ -52,7 +52,7 @@ const SearchRaffle = ({ setSearchModalOpen }) => {
         />
         <button
           onClick={() => handleSearch}
-          className="bg-blue-600 text-white px-4 hover:bg-blue-700 rounded-tr-lg rounded-br-lg"
+          className="bg-violet-600 text-white px-4 hover:bg-violet-700 rounded-tr-lg rounded-br-lg"
         >
           <SearchIcon />
         </button>

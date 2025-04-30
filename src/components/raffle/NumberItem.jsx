@@ -15,7 +15,7 @@ const NumberItem = ({
   const isSelected = selectedNumbers.includes(number.number);
 
   return (
-    <li className="flex flex-col justify-between items-center h-24 mt-4 w-full">
+    <li className="flex flex-col justify-between items-center h-20 pt-2 w-full">
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: [1, 1.15, 1] }}
@@ -50,13 +50,13 @@ const NumberItem = ({
         <div className="text-xs w-20 text-center overflow-hidden text-ellipsis whitespace-nowrap">
           {number.status === "sold" && (
             <p className="text-gray-600">
-              {number.buyerName} - {number.buyerDni}
+              {number.buyerName}
             </p>
           )}
           {number.status === "reserved" && (
             <button
               onClick={() => approvePayment(number.id)}
-              className="mt-1 bg-blue-500 text-white px-2 py-0.5 rounded text-xs"
+              className="mt-1 bg-violet-500 text-white px-2 py-0.5 rounded text-xs"
             >
               Aceptar
             </button>
