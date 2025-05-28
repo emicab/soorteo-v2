@@ -15,7 +15,7 @@ const NumberItem = ({
   const isSelected = selectedNumbers.includes(number.number);
 
   return (
-    <li className="flex flex-col justify-between items-center h-20 pt-2 w-full">
+    <li className="flex flex-col justify-between items-center h-24 pt-2 w-full">
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: [1, 1.15, 1] }}
